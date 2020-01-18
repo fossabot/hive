@@ -1,0 +1,16 @@
+syntax="proto3";
+package proto;
+import "defs.proto";
+
+//import "github.com/gogo/protobuf/gogoproto/gogo.proto";
+
+service api {
+    rpc RoomListener(Listen) returns (stream Room);
+    rpc Listener(Listen) returns (stream Message);
+    rpc BroadcastMessage(stream Message) returns (Empty);
+    rpc Register(NewUser) returns (Empty);
+    rpc Unregister(LoginRequest) returns (Empty);
+    rpc Login(LoginRequest) returns (User);
+    rpc InitDb(Empty) returns (Empty);
+    rpc Handshake(HandshakeReq) returns (Welcome);
+}

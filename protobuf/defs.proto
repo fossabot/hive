@@ -1,0 +1,59 @@
+syntax="proto3";
+package proto;
+
+import "github.com/gogo/protobuf/gogoproto/gogo.proto";
+message Empty {}
+
+message Customer {
+    string Id = 1[(gogoproto.jsontag) = "uid"];
+    string CustomerName = 2  [(gogoproto.jsontag) = "CustomerName"];
+}
+message HandshakeReq {
+    string Name = 1;
+    string ToUserId = 2;
+}
+message Listen {
+    string OwnerId = 1;
+    string UserId = 2;
+}
+message LoginRequest {
+    string Username = 1  [(gogoproto.jsontag) = "Username"];
+    string Password = 2 [(gogoproto.jsontag) = "Password"];
+}
+message Message {
+    string Content = 1;
+    string FromId = 2;
+    string RoomId = 3;
+}
+message N {
+    int32 deleted =  1;
+}
+message NewUser{
+    string Username = 1  [(gogoproto.jsontag) = "Username", (gogoproto.moretags) = "validate:\"required\""];
+    string Password = 2 [(gogoproto.jsontag) = "Password", (gogoproto.moretags) = "validate:\"required\""];
+    string Email = 3 [(gogoproto.jsontag) = "Email", (gogoproto.moretags) = "validate:\"required,email\""];
+    bool Owner = 4 [(gogoproto.jsontag) = "Owner"];
+}
+message Room {
+    string Id = 1[(gogoproto.jsontag) = "uid"];
+    string Name = 2[(gogoproto.jsontag) = "Room"];
+}
+message Str {
+    string ing = 1;
+}
+message User {
+    string Id = 1[(gogoproto.jsontag) = "uid"];
+    string Username = 2;
+    string Firstname = 3;
+    string Lastname = 4;
+    int32 Age = 5;
+    bool Owner = 6;
+    string Email = 7;
+    string Password = 8;
+}
+message Welcome {
+    Customer Customer = 1;
+    Room Room = 2;
+    string message = 3  [(gogoproto.jsontag) = "WelcomeMessage"];
+}
+

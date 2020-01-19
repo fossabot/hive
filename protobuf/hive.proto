@@ -1,5 +1,6 @@
 syntax="proto3";
-package proto;
+package hive;
+option go_package = "github.com/benka-me/hive/go-pkg/hive";
 
 import "github.com/gogo/protobuf/gogoproto/gogo.proto";
 message Empty {}

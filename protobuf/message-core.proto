@@ -1,9 +1,0 @@
-syntax="proto3";
-package proto;
-import "defs.proto";
-
-//import "github.com/gogo/protobuf/gogoproto/gogo.proto";
-
-service messageCore {
-    rpc StreamingChannel(stream Message) returns (stream Message);
-}

@@ -1,7 +1,13 @@
 hive:
+  hive:
+    repo: github.com/benka-me/hive
+    pkgName: hive
+    cell: false
   cell-paasenger-api:
     repo: github.com/benka-me/cell-paasenger-api
     pkgName: api
+    cell: true
   cell-dgraph:
     repo: github.com/benka-me/cell-dgraph
     pkgName: dgraph
+    cell: true

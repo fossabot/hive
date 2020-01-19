@@ -6,7 +6,6 @@ import (
 	"fmt"
 	"github.com/benka-me/hive/go-pkg/library"
 	"github.com/benka-me/hive/go-pkg/yaml"
-	"log"
 	"os/exec"
 )
 
@@ -34,18 +33,19 @@ func (g *InstallCommand) Init(args []string) error {
 }
 
 func goGet(repo string) error {
-	cmd := exec.Command("go", "get", "-d", repo+"...")
+	cmd := exec.Command("go", "get", "-d", "-v", fmt.Sprintf("%s/cmd", repo))
 	var out bytes.Buffer
 	var errs bytes.Buffer
 	cmd.Stdout = &out
 	cmd.Stderr= &errs
+	fmt.Println(cmd.Args)
 	err := cmd.Run()
 	if err != nil {
-		log.Fatal(errs.String(), err)
+		fmt.Println(errs.String())
 	}
 	fmt.Printf("in all caps: %q\n", out.String())
 
-	return nil
+	return err
 }
 
 func (g *InstallCommand) Run() error {
@@ -55,12 +55,8 @@ func (g *InstallCommand) Run() error {
 	}
 
 	lib, err := library.GetLibray()
-	fmt.Println(lib)
 	for _, dep := range config.Dependencies {
-		err := goGet(lib.Hive[dep].Repo)
-		if err != nil {
-			return err
-		}
+		_ = goGet(lib.Hive[dep].Repo)
 	}
 
 	return nil

@@ -1,0 +1,7 @@
+hive:
+  cell-paasenger-api:
+    repo: github.com/benka-me/cell-paasenger-api
+    pkgName: api
+  cell-dgraph:
+    repo: github.com/benka-me/cell-dgraph
+    pkgName: dgraph

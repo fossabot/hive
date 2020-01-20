@@ -2,11 +2,10 @@ package cli
 
 import (
 	"bytes"
-	"errors"
-	"flag"
 	"fmt"
 	"github.com/benka-me/hive/go-pkg/library"
 	"github.com/benka-me/hive/go-pkg/yaml"
+	"github.com/urfave/cli"
 	"os"
 	"os/exec"
 )
@@ -38,7 +37,7 @@ func protoc(lib library.Library, dep string) error {
 	return nil
 }
 
-func (g *ProtocCommand) Run() error {
+func runProtoc(c *cli.Context) error {
 	config, err := yaml.GetConfig()
 	if err != nil {
 		return err
@@ -47,31 +46,8 @@ func (g *ProtocCommand) Run() error {
 	lib, err := library.GetLibrary()
 
 	for _, dep := range config.Dependencies {
-		protoc(lib, dep)
+		_ = protoc(lib, dep)
 	}
 
 	return nil
 }
-
-type ProtocCommand struct {
-	fs *flag.FlagSet
-	name string
-}
-
-func NewProtocCommand() *ProtocCommand {
-	return &ProtocCommand{
-		fs: flag.NewFlagSet("protoc", flag.ContinueOnError),
-	}
-}
-
-func (g *ProtocCommand) Name() string {
-	return g.fs.Name()
-}
-
-func (g *ProtocCommand) Init(args []string) error {
-	if len(gopath) < 3 {
-		return errors.New("bad gopath: " + gopath)
-	}
-	return g.fs.Parse(args)
-}
-

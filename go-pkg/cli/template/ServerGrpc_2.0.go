@@ -1,4 +1,4 @@
-package rpc
+package template
 
 import (
 	"fmt"

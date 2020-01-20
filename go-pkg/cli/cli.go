@@ -76,6 +76,12 @@ func Run()  {
 			},
 		},
 		{
+			Name:                   "protoc",
+			Aliases:                []string{"proto", "gnr"},
+			Action: runProtoc,
+			Usage:                  "generate protobuf files",
+		},
+		{
 			Name:                   "install",
 			Aliases:                []string{"i"},
 			Action: runInstall,

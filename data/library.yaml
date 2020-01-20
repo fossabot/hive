@@ -11,3 +11,7 @@ hive:
     repo: github.com/benka-me/cell-dgraph
     pkgName: dgraph
     cell: true
+  cell-history:
+    repo: github.com/benka-me/cell-history
+    pkgName: history
+    cell: true

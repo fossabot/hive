@@ -2,35 +2,13 @@ package cli
 
 import (
 	"bytes"
-	"flag"
 	"fmt"
 	"github.com/benka-me/hive/go-pkg/library"
 	"github.com/benka-me/hive/go-pkg/yaml"
+	"github.com/urfave/cli"
+	"os"
 	"os/exec"
 )
-
-type InstallCommand struct {
-	fs *flag.FlagSet
-
-	name string
-}
-func NewInstallCommand() *InstallCommand {
-	gc := &InstallCommand{
-		fs: flag.NewFlagSet("i", flag.ContinueOnError),
-	}
-
-	gc.fs.StringVar(&gc.name, "name", "World", "name of the person to be greeted")
-
-	return gc
-}
-
-func (g *InstallCommand) Name() string {
-	return g.fs.Name()
-}
-
-func (g *InstallCommand) Init(args []string) error {
-	return g.fs.Parse(args)
-}
 
 func goGet(repo string) error {
 	cmd := exec.Command("go", "get", "-d", "-v", fmt.Sprintf("%s/cmd", repo))
@@ -43,21 +21,57 @@ func goGet(repo string) error {
 	if err != nil {
 		fmt.Println(errs.String())
 	}
-	fmt.Printf("in all caps: %q\n", out.String())
+	fmt.Println(out.String())
 
 	return err
 }
 
-func (g *InstallCommand) Run() error {
+func installAll(lib library.Library, config yaml.Config) error {
+	fmt.Println("install all")
+	//for _, dep := range config.Dependencies {
+	//	_ = goGet(lib.Hive[dep].Repo)
+	//}
+	return nil
+}
+
+func installDep (lib library.Library, config *yaml.Config, dep string) error {
+	err := goGet(lib.Hive[dep].Repo)
+	if err != nil {
+		return err
+	}
+	config.Dependencies = append(config.Dependencies, dep)
+
+	return nil
+}
+
+func installUnits (lib library.Library, config *yaml.Config) error {
+	for _, dep := range os.Args[2:] {
+		installDep(lib, config, dep)
+	}
+	return nil
+}
+
+func runInstall(c *cli.Context) error {
 	config, err := yaml.GetConfig()
 	if err != nil {
 		return err
 	}
 
 	lib, err := library.GetLibray()
-	for _, dep := range config.Dependencies {
-		_ = goGet(lib.Hive[dep].Repo)
+	if len(os.Args) == 2 {
+		err := installAll(lib, config)
+		if err != nil {
+			return err
+		}
+	} else {
+		err := installUnits(lib, &config)
+		if err != nil {
+			return err
+		}
+		yaml.SaveConfig(config)
 	}
+
+
 
 	return nil
 }

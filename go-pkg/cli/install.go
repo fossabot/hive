@@ -57,7 +57,7 @@ func runInstall(c *cli.Context) error {
 		return err
 	}
 
-	lib, err := library.GetLibray()
+	lib, err := library.GetLibrary()
 	if len(os.Args) == 2 {
 		err := installAll(lib, config)
 		if err != nil {

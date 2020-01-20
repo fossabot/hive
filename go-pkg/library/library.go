@@ -9,29 +9,39 @@ import (
 )
 
 type Cell struct {
-	Name string
-	Repo string
-	PkgName string `yaml:"pkgName"`
+	Name string        `bson:"name" json:"name" yaml:"name"`
+	PkgName string     `bson:"pkgName" json:"pkgName" yaml:"pkgName"`
+	Repo string        `bson:"repo" json:"repo" yaml:"repo"`
+	Author string      `bson:"author" json:"author" yaml:"author"`
+	AuthorEmail string `bson:"authorEmail" json:"authorEmail" yaml:"authorEmail"`
+	Port int           `bson:"port" json:"port" yaml:"port"`
 }
 
 type Library struct {
 	Hive map[string]Cell
 }
 
-func GetLibray() (Library, error) {
-	library := Library{}
-	gopath := os.Getenv("GOPATH")
+var (
+	libraryFile string
+	library Library
+	gopath string
+)
+
+func init() {
+	gopath = os.Getenv("GOPATH")
 	if len(gopath) < 3 {
-		return library, errors.New("gopath not specified: " + gopath)
+		panic(errors.New("gopath not specified: " + gopath))
 	}
-	file :=  fmt.Sprintf("%s/src/github.com/benka-me/hive/data/library.yaml", gopath)
+	libraryFile =  fmt.Sprintf("%s/src/github.com/benka-me/hive/data/library.yaml", gopath)
 
-	_, err := os.Stat(file)
+	_, err := os.Stat(libraryFile)
 	if os.IsNotExist(err) {
-		return library, err
+		panic(err)
 	}
+}
 
-	dat, err := ioutil.ReadFile(file)
+func GetLibrary() (Library, error) {
+	dat, err := ioutil.ReadFile(libraryFile)
 	if err != nil {
 		return library, err
 	}
@@ -41,6 +51,34 @@ func GetLibray() (Library, error) {
 		return library, err
 	}
 
-
 	return library, nil
+}
+
+func AddCellToLibrary (cell Cell) error {
+	lib, err := GetLibrary()
+	if err != nil {
+		return err
+	}
+
+	lib.Hive[cell.Name] = cell
+
+	err = SaveLibrary(lib)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
+func SaveLibrary(library Library) error {
+	data, err := yaml.Marshal(library)
+	if err != nil {
+		return err
+	}
+
+	err = ioutil.WriteFile(libraryFile, data, 0644)
+	if err != nil {
+		return err
+	}
+
+	return nil
 }

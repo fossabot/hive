@@ -1,21 +1,43 @@
 hive:
-  hive:
-    repo: github.com/benka-me/hive
-    pkgName: hive
-    cell: false
-  cell-paasenger-api:
-    repo: github.com/benka-me/cell-paasenger-api
-    pkgName: api
-    cell: true
   cell-dgraph:
-    repo: github.com/benka-me/cell-dgraph
+    name: ""
     pkgName: dgraph
-    cell: true
+    repo: github.com/benka-me/cell-dgraph
+    author: ""
+    authorEmail: ""
+    port: 0
   cell-history:
-    repo: github.com/benka-me/cell-history
+    name: ""
     pkgName: history
-    cell: true
+    repo: github.com/benka-me/cell-history
+    author: ""
+    authorEmail: ""
+    port: 0
+  cell-paasenger-api:
+    name: ""
+    pkgName: api
+    repo: github.com/benka-me/cell-paasenger-api
+    author: ""
+    authorEmail: ""
+    port: 0
   cell-user:
-    repo: github.com/benka-me/cell-user
+    name: ""
     pkgName: user
-    cell: true
+    repo: github.com/benka-me/cell-user
+    author: ""
+    authorEmail: ""
+    port: 0
+  hive:
+    name: ""
+    pkgName: hive
+    repo: github.com/benka-me/hive
+    author: ""
+    authorEmail: ""
+    port: 0
+  this-is-a-test:
+    name: this-is-a-test
+    pkgName: asdf
+    repo: asdsadf/asdfdasfdsf/adsfdsfdsa/
+    author: benka
+    authorEmail: asdsad@asdfasd.com
+    port: 2345

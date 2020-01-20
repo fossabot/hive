@@ -44,7 +44,7 @@ func (g *ProtocCommand) Run() error {
 		return err
 	}
 
-	lib, err := library.GetLibray()
+	lib, err := library.GetLibrary()
 
 	for _, dep := range config.Dependencies {
 		protoc(lib, dep)

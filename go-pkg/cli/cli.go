@@ -60,25 +60,38 @@ func Run()  {
 	}
 	app.Commands = cli.Commands{
 		{
+			Name:                   "init",
+			Usage:                  "init cell or hive",
+			Subcommands: cli.Commands{
+				{
+					Name:                   "cell",
+					Action: runInitCell,
+					Usage:                  "init cell microservice",
+				},
+				{
+					Name:                   "hive",
+					Action: runInitHive,
+					Usage:                  "init hive application",
+				},
+			},
+		},
+		{
 			Name:                   "install",
 			Aliases:                []string{"i"},
 			Action: runInstall,
 			Usage:                  "install dependencies",
-			BashComplete: func(c *cli.Context) {},
-			UsageText:              "",
-			Description:            "",
-			ArgsUsage:              "Argss Usaaaaage",
-			Category:               "",
-			Before:                 nil,
-			After:                  nil,
-			OnUsageError:           nil,
-			Flags:                  []cli.Flag{},
-			SkipFlagParsing:        true,
-			HideHelp:               false,
-			Hidden:                 false,
-			UseShortOptionHandling: false,
-			HelpName:               "",
-			CustomHelpTemplate:     "",
+		},
+		{
+			Name:                   "list",
+			Aliases:                []string{"ls"},
+			Action: runList,
+			Usage:                  "list dependencies",
+		},
+		{
+			Name:                   "remove",
+			Aliases:                []string{"rm", "delete", "del"},
+			Action: runRemove,
+			Usage:                  "remove dependencies",
 		},
 	}
 

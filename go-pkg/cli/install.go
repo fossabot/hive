@@ -28,9 +28,9 @@ func goGet(repo string) error {
 
 func installAll(lib library.Library, config yaml.Config) error {
 	fmt.Println("install all")
-	//for _, dep := range config.Dependencies {
-	//	_ = goGet(lib.Hive[dep].Repo)
-	//}
+	for _, dep := range config.Dependencies {
+		_ = goGet(lib.Hive[dep].Repo)
+	}
 	return nil
 }
 
@@ -68,7 +68,11 @@ func runInstall(c *cli.Context) error {
 		if err != nil {
 			return err
 		}
-		yaml.SaveConfig(config)
+
+		err = yaml.SaveConfig(config)
+		if err != nil {
+			return err
+		}
 	}
 
 

@@ -15,3 +15,7 @@ hive:
     repo: github.com/benka-me/cell-history
     pkgName: history
     cell: true
+  cell-user:
+    repo: github.com/benka-me/cell-user
+    pkgName: user
+    cell: true

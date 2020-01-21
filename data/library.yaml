@@ -46,7 +46,7 @@ hive:
     repo: github.com/benka-me/test-number-1
     author: benka
     authorEmail: asdf@asdf.asdf
-    port: 2345
+    port: 3456
   this-is-a-test:
     name: this-is-a-test
     pkgName: asdf

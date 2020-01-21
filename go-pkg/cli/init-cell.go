@@ -51,38 +51,18 @@ func createFiles(cell library.Cell) error {
 	}
 
 
-	//generate main.proto & deps.proto files
-	dat, err := ioutil.ReadFile(fmt.Sprintf("%s/src/github.com/benka-me/hive/go-pkg/cli/template/deps.proto", gopath))
+	//generate .proto file
+	dat, err := ioutil.ReadFile(fmt.Sprintf("%s/src/github.com/benka-me/hive/go-pkg/cli/template/template.proto", gopath))
 	if err != nil {
 		return err
 	}
 
-	tmpl, err := template.New("deps").Parse(string(dat))
+	tmpl, err := template.New("proto").Parse(string(dat))
 	if err != nil {
 		return err
 	}
 
-	f, err := os.Create(fmt.Sprintf("%s/src/%s/protobuf/deps.proto", gopath, cell.Repo))
-	if err != nil {
-		return err
-	}
-
-	err = tmpl.Execute(f, cell)
-	if err != nil {
-		return err
-	}
-
-	dat, err = ioutil.ReadFile(fmt.Sprintf("%s/src/github.com/benka-me/hive/go-pkg/cli/template/template.proto", gopath))
-	if err != nil {
-		return err
-	}
-
-	tmpl, err = template.New("proto").Parse(string(dat))
-	if err != nil {
-		return err
-	}
-
-	f, err = os.Create(fmt.Sprintf("%s/src/%s/protobuf/%s.proto", gopath, cell.Repo, cell.PkgName))
+	f, err := os.Create(fmt.Sprintf("%s/src/%s/protobuf/%s.proto", gopath, cell.Repo, cell.PkgName))
 	if err != nil {
 		return err
 	}
@@ -95,6 +75,27 @@ func createFiles(cell library.Cell) error {
 	//generate .pb.go from .proto file
 	lib, err := library.GetLibrary()
 	_ = protoc(lib, cell.Name)
+
+	//generate main.go
+	dat, err = ioutil.ReadFile(fmt.Sprintf("%s/src/github.com/benka-me/hive/go-pkg/cli/template/maingo", gopath))
+	if err != nil {
+		return err
+	}
+
+	tmpl, err = template.New("server").Parse(string(dat))
+	if err != nil {
+		return err
+	}
+
+	f, err = os.Create(fmt.Sprintf("%s/src/%s/cmd/main.go", gopath, cell.Repo))
+	if err != nil {
+		return err
+	}
+
+	err = tmpl.Execute(f, cell)
+	if err != nil {
+		return err
+	}
 
 	//generate ServerGrpc_2.0.go
 	dat, err = ioutil.ReadFile(fmt.Sprintf("%s/src/github.com/benka-me/hive/go-pkg/cli/template/server-grpc-2.0go", gopath))
@@ -117,8 +118,6 @@ func createFiles(cell library.Cell) error {
 		return err
 	}
 
-	//copy main.go
-	_, err = copy(fmt.Sprintf("%s/src/github.com/benka-me/hive/go-pkg/cli/template/main.go", gopath), fmt.Sprintf("%s/src/%s/cmd/main.go", gopath, cell.Repo))
 	//copy hello-world.go
 	_, err = copy(fmt.Sprintf("%s/src/github.com/benka-me/hive/go-pkg/cli/template/hello-world.go", gopath), fmt.Sprintf("%s/src/%s/go-pkg/http/rpc/hello-world.go", gopath, cell.Repo))
 

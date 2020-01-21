@@ -11,6 +11,7 @@ import (
 type Cell struct {
 	Name string        `bson:"name" json:"name" yaml:"name"`
 	PkgName string     `bson:"pkgName" json:"pkgName" yaml:"pkgName"`
+	PkgNameCamel string     `bson:"pkgName" json:"pkgName" yaml:"pkgNameCamel"`
 	Repo string        `bson:"repo" json:"repo" yaml:"repo"`
 	Author string      `bson:"author" json:"author" yaml:"author"`
 	AuthorEmail string `bson:"authorEmail" json:"authorEmail" yaml:"authorEmail"`

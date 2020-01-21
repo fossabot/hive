@@ -17,12 +17,12 @@ func Test_createProtobuf(t *testing.T) {
 		{
 			name: "regular1",
 			args: args{cell:library.Cell{
-				Name:        "cell-test",
-				PkgName:     "test",
-				Repo:        "github.com/benka-me/test",
+				Name:        "testnumber-1",
+				PkgName:     "asdf",
+				Repo:        "github.com/benka-me/test-number-1",
 				Author:      "benka",
 				AuthorEmail: "test@gmail.com",
-				Port:        2000,
+				Port:        3456,
 			}},
 		},
 	}

@@ -1,6 +1,9 @@
 syntax="proto3";
 package {{.PkgName}};
+
 option go_package = "{{.Repo}}/go-pkg/{{.PkgName}}";
-import "github.com/benka-me/hive/protobuf/hive.proto";
+import "{{.Repo}}/protobuf/deps.proto";
+
 service {{.PkgName}} {
+    rpc HelloWorld (hive.User) returns (hive.Welcome);
 }

@@ -2,6 +2,7 @@ hive:
   cell-dgraph:
     name: ""
     pkgName: dgraph
+    pkgNameCamel: ""
     repo: github.com/benka-me/cell-dgraph
     author: ""
     authorEmail: ""
@@ -9,6 +10,7 @@ hive:
   cell-history:
     name: ""
     pkgName: history
+    pkgNameCamel: ""
     repo: github.com/benka-me/cell-history
     author: ""
     authorEmail: ""
@@ -16,6 +18,7 @@ hive:
   cell-paasenger-api:
     name: ""
     pkgName: api
+    pkgNameCamel: ""
     repo: github.com/benka-me/cell-paasenger-api
     author: ""
     authorEmail: ""
@@ -23,6 +26,7 @@ hive:
   cell-user:
     name: ""
     pkgName: user
+    pkgNameCamel: ""
     repo: github.com/benka-me/cell-user
     author: ""
     authorEmail: ""
@@ -30,13 +34,23 @@ hive:
   hive:
     name: ""
     pkgName: hive
+    pkgNameCamel: ""
     repo: github.com/benka-me/hive
     author: ""
     authorEmail: ""
     port: 0
+  test-number-1:
+    name: test-number-1
+    pkgName: asdf
+    pkgNameCamel: ""
+    repo: github.com/benka-me/test-number-1
+    author: benka
+    authorEmail: asdf@asdf.asdf
+    port: 2345
   this-is-a-test:
     name: this-is-a-test
     pkgName: asdf
+    pkgNameCamel: ""
     repo: asdsadf/asdfdasfdsf/adsfdsfdsa/
     author: benka
     authorEmail: asdsad@asdfasd.com

@@ -1,20 +1,24 @@
-package template
+package rpc
 
 import (
 	"fmt"
+	"{{.Repo}}/go-pkg/{{.PkgName}}"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/reflection"
 	"log"
 	"net"
 )
 
-type Server struct {}
-const port = ":8037"
+type Cell struct {}
+
+const port = ":{{.Port}}"
+
 var grpcServer *grpc.Server
-var guide *Server
 
 func Server_2_0() {
 	var err error
+	var cell *Cell
+
 	grpcServer = grpc.NewServer()
 	lis, err := net.Listen("tcp", port)
 
@@ -22,10 +26,10 @@ func Server_2_0() {
 		log.Fatalf("failed to listen: %v", err)
 	}
 	{
-		//api.RegisterApiServer(grpcServer, guide)
+		{{.PkgName}}.Register{{.PkgNameCamel}}Server(grpcServer, cell)
 		reflection.Register(grpcServer)
 	}
-	fmt.Println("Server Grpc 2.0 on port ", port)
+	fmt.Println("{{.PkgNameCamel}}Server Grpc 2.0 on port ", port)
 	if err := grpcServer.Serve(lis); err != nil {
 		log.Fatalf("failed to serve: %v", err)
 	}

@@ -19,7 +19,7 @@ func Test_createProtobuf(t *testing.T) {
 			name: "regular1",
 			args: args{cell:library.Cell{
 				Name:        "test-number-1",
-				PkgName:     "test",
+				PkgName:     "tttt",
 				Repo:        "github.com/benka-me/test-number-1",
 				Author:      "benka",
 				AuthorEmail: "test@gmail.com",

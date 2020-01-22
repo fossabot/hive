@@ -1,14 +1,17 @@
-package yaml
+package cli
 
 import (
 	"errors"
 	"fmt"
 	"github.com/benka-me/hive/go-pkg/library"
+	"github.com/benka-me/hive/go-pkg/yaml"
 	"github.com/go-playground/validator"
 	"regexp"
 	"strconv"
 	"strings"
 )
+
+var v *validator.Validate
 
 func fmtError (err string) string {
 	switch err {
@@ -55,7 +58,6 @@ func isAlphanumDash (s string) error {
 	}
 }
 
-var v *validator.Validate
 func Step(title, validate string, custom stringValid) string {
 	var tmp string
 
@@ -75,7 +77,7 @@ func Step(title, validate string, custom stringValid) string {
 	return tmp
 }
 
-func InitYaml () (library.Cell, error) {
+func askUser() (library.Cell, error) {
 	cell := library.Cell{}
 	v = validator.New()
 
@@ -85,8 +87,9 @@ func InitYaml () (library.Cell, error) {
 	cell.Author = Step("Author", "required,alphanumunicode,excludesrune= ", func(s string) error {return nil})
 	cell.AuthorEmail = Step("Email", "required,email", func(s string) error {return nil})
 	cell.Port, _ = strconv.Atoi(Step("Port", "required,number", func(s string) error {return nil}))
+	cell.PkgNameCamel = strings.Title(kebabToCamelCase(cell.PkgName))
 
-	err := SaveCell(cell)
+	err := yaml.SaveCell(cell)
 	if err != nil {
 		return cell, err
 	}

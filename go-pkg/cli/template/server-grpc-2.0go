@@ -9,7 +9,7 @@ import (
 	"net"
 )
 
-type Cell struct {}
+type App struct {}
 
 const port = ":{{.Port}}"
 
@@ -17,7 +17,7 @@ var grpcServer *grpc.Server
 
 func Server_2_0() {
 	var err error
-	var cell *Cell
+	var app *App
 
 	grpcServer = grpc.NewServer()
 	lis, err := net.Listen("tcp", port)
@@ -26,7 +26,7 @@ func Server_2_0() {
 		log.Fatalf("failed to listen: %v", err)
 	}
 	{
-		{{.PkgName}}.Register{{.PkgNameCamel}}Server(grpcServer, cell)
+		{{.PkgName}}.Register{{.PkgNameCamel}}Server(grpcServer, app)
 		reflection.Register(grpcServer)
 	}
 	fmt.Println("{{.PkgNameCamel}}Server Grpc 2.0 on port ", port)

@@ -2,6 +2,7 @@ package cli
 
 import (
 	"github.com/benka-me/hive/go-pkg/library"
+	"github.com/benka-me/hive/go-pkg/yaml"
 	"testing"
 )
 
@@ -18,7 +19,7 @@ func Test_createProtobuf(t *testing.T) {
 			name: "regular1",
 			args: args{cell:library.Cell{
 				Name:        "test-number-1",
-				PkgName:     "asdf",
+				PkgName:     "test",
 				Repo:        "github.com/benka-me/test-number-1",
 				Author:      "benka",
 				AuthorEmail: "test@gmail.com",
@@ -28,7 +29,12 @@ func Test_createProtobuf(t *testing.T) {
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			err := createFiles(tt.args.cell)
+			err := yaml.SaveCell(tt.args.cell)
+			if err != nil {
+				t.Error(err)
+			}
+
+			err = createFiles(tt.args.cell)
 			if err != nil {
 				t.Error(err)
 			}

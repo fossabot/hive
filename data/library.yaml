@@ -1,4 +1,12 @@
 hive:
+  blue:
+    name: blue
+    pkgName: blue
+    pkgNameCamel: ""
+    repo: github.com/benka-me/blue
+    author: benka
+    authorEmail: benka@gmail.com
+    port: 3333
   cell-dgraph:
     name: ""
     pkgName: dgraph
@@ -39,13 +47,21 @@ hive:
     author: ""
     authorEmail: ""
     port: 0
+  red:
+    name: red
+    pkgName: red
+    pkgNameCamel: ""
+    repo: github.com/benka-me/red
+    author: benka
+    authorEmail: benka@gmail.com
+    port: 3333
   test-number-1:
     name: test-number-1
-    pkgName: asdf
+    pkgName: test
     pkgNameCamel: ""
     repo: github.com/benka-me/test-number-1
     author: benka
-    authorEmail: asdf@asdf.asdf
+    authorEmail: test@gmail.com
     port: 3456
   this-is-a-test:
     name: this-is-a-test

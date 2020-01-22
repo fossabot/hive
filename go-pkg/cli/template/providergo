@@ -1,0 +1,15 @@
+package {{.PkgName}}
+
+import (
+	"{{.Repo}}/go-pkg/{{.PkgName}}"
+    "google.golang.org/grpc"
+)
+
+func ClientProvider (server string, options ...grpc.DialOption) ({{.PkgName}}.{{.PkgNameCamel}}Client, error) {
+	conn, err := grpc.Dial(server + ":{{.Port}}", options...)
+	if err != nil {
+		panic("Cannot dial")
+	}
+
+	return {{.PkgName}}.New{{.PkgNameCamel}}Client(conn), nil
+}

@@ -3,7 +3,6 @@ package cli
 import (
 	"fmt"
 	"github.com/benka-me/hive/go-pkg/library"
-	"github.com/benka-me/hive/go-pkg/yaml"
 	"github.com/urfave/cli"
 	"io"
 	"io/ioutil"
@@ -14,11 +13,12 @@ import (
 
 
 func runInitCell(c *cli.Context) error {
-	cell, err := yaml.InitYaml()
+	cell, err := askUser()
 	if err != nil {
 		return err
 	}
 
+	cell.PkgNameCamel = strings.Title(kebabToCamelCase(cell.PkgName))
 	err = library.AddCellToLibrary(cell)
 	if err != nil {
 		return err
@@ -33,7 +33,11 @@ func createFiles(cell library.Cell) error {
 	cell.PkgNameCamel = strings.Title(kebabToCamelCase(cell.PkgName))
 
 	//create directories
-	err := os.MkdirAll(fmt.Sprintf("%s/go-pkg/http/rpc", repoPath), perm)
+	err := os.MkdirAll(fmt.Sprintf("%s/go-pkg/provider", repoPath), perm)
+	if err != nil {
+		return err
+	}
+	err = os.MkdirAll(fmt.Sprintf("%s/go-pkg/http/rpc", repoPath), perm)
 	if err != nil {
 		return err
 	}
@@ -50,77 +54,90 @@ func createFiles(cell library.Cell) error {
 		return err
 	}
 
-
 	//generate .proto file
-	dat, err := ioutil.ReadFile(fmt.Sprintf("%s/src/github.com/benka-me/hive/go-pkg/cli/template/template.proto", gopath))
+	proto := Code{
+		Interface: cell,
+		Template:  fmt.Sprintf("%s/src/github.com/benka-me/hive/go-pkg/cli/template/template.proto", gopath),
+		Target:    fmt.Sprintf("%s/src/%s/protobuf/%s.proto", gopath, cell.Repo, cell.PkgName),
+		Name:      "proto",
+	}
+	err = proto.generator()
 	if err != nil {
 		return err
 	}
-
-	tmpl, err := template.New("proto").Parse(string(dat))
-	if err != nil {
-		return err
-	}
-
-	f, err := os.Create(fmt.Sprintf("%s/src/%s/protobuf/%s.proto", gopath, cell.Repo, cell.PkgName))
-	if err != nil {
-		return err
-	}
-
-	err = tmpl.Execute(f, cell)
-	if err != nil {
-		return err
-	}
-
-	//generate .pb.go from .proto file
-	lib, err := library.GetLibrary()
-	_ = protoc(lib, cell.Name)
 
 	//generate main.go
-	dat, err = ioutil.ReadFile(fmt.Sprintf("%s/src/github.com/benka-me/hive/go-pkg/cli/template/maingo", gopath))
-	if err != nil {
-		return err
+	main := Code{
+		Interface: cell,
+		Template:  fmt.Sprintf("%s/src/github.com/benka-me/hive/go-pkg/cli/template/maingo", gopath),
+		Target:    fmt.Sprintf("%s/src/%s/cmd/main.go", gopath, cell.Repo),
+		Name:      "main",
 	}
-
-	tmpl, err = template.New("server").Parse(string(dat))
-	if err != nil {
-		return err
-	}
-
-	f, err = os.Create(fmt.Sprintf("%s/src/%s/cmd/main.go", gopath, cell.Repo))
-	if err != nil {
-		return err
-	}
-
-	err = tmpl.Execute(f, cell)
+	err = main.generator()
 	if err != nil {
 		return err
 	}
 
 	//generate ServerGrpc_2.0.go
-	dat, err = ioutil.ReadFile(fmt.Sprintf("%s/src/github.com/benka-me/hive/go-pkg/cli/template/server-grpc-2.0go", gopath))
+	server := Code{
+		Interface: cell,
+		Template:  fmt.Sprintf("%s/src/github.com/benka-me/hive/go-pkg/cli/template/server-grpc-2.0go", gopath),
+		Target:    fmt.Sprintf("%s/src/%s/go-pkg/http/rpc/server-grpc-2.0.go", gopath, cell.Repo),
+		Name:      "server",
+	}
+	err = server.generator()
 	if err != nil {
 		return err
 	}
 
-	tmpl, err = template.New("server").Parse(string(dat))
+	//generate provider
+	provider := Code{
+		Interface: cell,
+		Template:  fmt.Sprintf("%s/src/github.com/benka-me/hive/go-pkg/cli/template/providergo", gopath),
+		Target:    fmt.Sprintf("%s/go-pkg/provider/provider.go", repoPath),
+		Name: "provider",
+	}
+	err = provider.generator()
 	if err != nil {
 		return err
 	}
 
-	f, err = os.Create(fmt.Sprintf("%s/src/%s/go-pkg/http/rpc/server-grpc-2.0.go", gopath, cell.Repo))
-	if err != nil {
-		return err
-	}
-
-	err = tmpl.Execute(f, cell)
-	if err != nil {
-		return err
-	}
+	lib, err := library.GetLibrary()
+	_ = protoc(lib, cell.Name)
 
 	//copy hello-world.go
 	_, err = copy(fmt.Sprintf("%s/src/github.com/benka-me/hive/go-pkg/cli/template/hello-world.go", gopath), fmt.Sprintf("%s/src/%s/go-pkg/http/rpc/hello-world.go", gopath, cell.Repo))
 
+	return nil
+}
+
+type Code struct {
+	Interface interface{}
+	Template string
+	Target string
+	Name string
+}
+
+func (code Code) generator() error {
+	dat, err := ioutil.ReadFile(code.Template)
+	if err != nil {
+		return err
+	}
+
+	tmpl, err := template.New(code.Name).Parse(string(dat))
+	if err != nil {
+		return err
+	}
+
+	f, err := os.Create(code.Target)
+	if err != nil {
+		return err
+	}
+
+	err = tmpl.Execute(f, code.Interface)
+	if err != nil {
+		return err
+	}
 	return nil
 }
 

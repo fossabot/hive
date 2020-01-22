@@ -2,6 +2,7 @@ package yaml
 
 import (
 	"errors"
+	"fmt"
 	"github.com/benka-me/hive/go-pkg/library"
 	"gopkg.in/yaml.v2"
 	"io/ioutil"
@@ -14,6 +15,7 @@ type Config struct {
 	Dependencies []string
 }
 const file = "./hive.yaml"
+var gopath = os.Getenv("GOPATH")
 
 func GetConfig() (Config, error) {
 	config := Config{}
@@ -72,7 +74,14 @@ func SaveCell(cell library.Cell) error {
 		return err
 	}
 
-	err = ioutil.WriteFile("./cell.yaml", data, 0644)
+	path := fmt.Sprintf("%s/src/%s/cell.yaml", gopath, cell.Repo)
+	fmt.Println(path)
+	err = ioutil.WriteFile(path, data, 0644)
+	if err != nil {
+		return err
+	}
+
+	err = library.AddCellToLibrary(cell)
 	if err != nil {
 		return err
 	}

@@ -81,8 +81,8 @@ func askUser() (library.Cell, error) {
 	cell := library.Cell{}
 	v = validator.New()
 
-	cell.Name = strings.ToLower(Step("Name of the new cell microservice: ", "required,lte=20,gte=3,excludes=cell,excludes=hive", isAlphanumDash))
-	cell.PkgName = strings.ToLower(Step("Package name (2 - 4 chars long) for packages and types building", "required,lte=5,gte=2,alpha,excludes=cell,excludes=hive", isAlphaDash))
+	cell.Name = strings.ToLower(Step("Name of the new cell microservice: ", "required,lte=20,gte=3", isAlphanumDash))
+	cell.PkgName = strings.ToLower(Step("Package name (2 - 7 chars long, shorter is better) for packages and types building", "required,lte=7,gte=2,alpha,excludes=cell,excludes=hive", isAlphaDash))
 	cell.Repo = Step("Repository address", "required,gte=5", func(s string) error {return nil})
 	cell.Author = Step("Author", "required,alphanumunicode,excludesrune= ", func(s string) error {return nil})
 	cell.AuthorEmail = Step("Email", "required,email", func(s string) error {return nil})

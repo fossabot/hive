@@ -1,0 +1,11 @@
+syntax="proto3";
+package Rpc{{.PkgName}};
+
+option go_package = "{{.Repo}}/go-pkg/rpc-{{.PkgName}}";
+
+import "github.com/benka-me/hive/protobuf/hive.proto";
+import "{{.Repo}}/protobuf/{{.PkgName}}.proto";
+
+service {{.PkgNameCamel}} {
+    rpc HelloWorld ({{.PkgName}}.Request) returns (hive.Welcome);
+}

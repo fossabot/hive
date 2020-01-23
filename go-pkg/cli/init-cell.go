@@ -41,6 +41,10 @@ func createFiles(cell library.Cell) error {
 	if err != nil {
 		return err
 	}
+	err = os.MkdirAll(fmt.Sprintf("%s/go-pkg/rpc-%s", repoPath, cell.PkgName), perm)
+	if err != nil {
+		return err
+	}
 	err = os.MkdirAll(fmt.Sprintf("%s/go-pkg/%s", repoPath, cell.PkgName), perm)
 	if err != nil {
 		return err
@@ -54,14 +58,26 @@ func createFiles(cell library.Cell) error {
 		return err
 	}
 
-	//generate .proto file
-	proto := Code{
+	//generate rpc.proto file
+	rpc := Code{
 		Interface: cell,
-		Template:  fmt.Sprintf("%s/src/github.com/benka-me/hive/go-pkg/cli/template/template.proto", gopath),
-		Target:    fmt.Sprintf("%s/src/%s/protobuf/%s.proto", gopath, cell.Repo, cell.PkgName),
-		Name:      "proto",
+		Template:  fmt.Sprintf("%s/src/github.com/benka-me/hive/go-pkg/cli/template/rpc.proto", gopath),
+		Target:    fmt.Sprintf("%s/src/%s/protobuf/rpc-%s.proto", gopath, cell.Repo, cell.PkgName),
+		Name:      "rpc",
 	}
-	err = proto.generator()
+	err = rpc.generator()
+	if err != nil {
+		return err
+	}
+
+	//generate defs.proto file
+	defs := Code{
+		Interface: cell,
+		Template:  fmt.Sprintf("%s/src/github.com/benka-me/hive/go-pkg/cli/template/defs.proto", gopath),
+		Target:    fmt.Sprintf("%s/src/%s/protobuf/%s.proto", gopath, cell.Repo, cell.PkgName),
+		Name:      "defs",
+	}
+	err = defs.generator()
 	if err != nil {
 		return err
 	}
@@ -78,7 +94,7 @@ func createFiles(cell library.Cell) error {
 		return err
 	}
 
-	//generate ServerGrpc_2.0.go
+	//generate server-grpc_2.0.go
 	server := Code{
 		Interface: cell,
 		Template:  fmt.Sprintf("%s/src/github.com/benka-me/hive/go-pkg/cli/template/server-grpc-2.0go", gopath),
@@ -103,7 +119,8 @@ func createFiles(cell library.Cell) error {
 	}
 
 	lib, err := library.GetLibrary()
-	_ = protoc(lib, cell.Name)
+	_ = protoc(lib, cell.Name, fmt.Sprintf("%s/src/%s/protobuf/%s.proto",gopath, cell.Repo, cell.PkgName))
+	_ = protoc(lib, cell.Name, fmt.Sprintf("%s/src/%s/protobuf/rpc-%s.proto",gopath, cell.Repo, cell.PkgName))
 
 	//copy hello-world.go
 	_, err = copy(fmt.Sprintf("%s/src/github.com/benka-me/hive/go-pkg/cli/template/hello-world.go", gopath), fmt.Sprintf("%s/src/%s/go-pkg/http/rpc/hello-world.go", gopath, cell.Repo))

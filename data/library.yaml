@@ -1,1 +1,25 @@
 hive:
+  cell-dgraph:
+    name: cell-dgraph
+    pkgName: dgraph
+    pkgNameCamel: Dgraph
+    repo: github.com/benka-me/cell-dgraph
+    author: benka
+    authorEmail: benka.node@gmail.com
+    port: 4001
+  cell-user:
+    name: cell-user
+    pkgName: user
+    pkgNameCamel: User
+    repo: github.com/benka-me/cell-user
+    author: benka
+    authorEmail: benka.node@gmail.com
+    port: 3655
+  test-number-1:
+    name: test-number-1
+    pkgName: test
+    pkgNameCamel: ""
+    repo: github.com/benka-me/test-number-1
+    author: benka
+    authorEmail: test@gmail.com
+    port: 3456

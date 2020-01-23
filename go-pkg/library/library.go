@@ -61,6 +61,9 @@ func AddCellToLibrary (cell Cell) error {
 		return err
 	}
 
+	if lib.Hive == nil {
+		lib.Hive = make(map[string]Cell)
+	}
 	lib.Hive[cell.Name] = cell
 
 	err = SaveLibrary(lib)

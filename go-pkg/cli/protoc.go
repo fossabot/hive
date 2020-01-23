@@ -14,14 +14,14 @@ var (
 	gopath string = os.Getenv("GOPATH")
 )
 
-func protoc(lib library.Library, dep string) error {
+func protoc(lib library.Library, dep, pbFile string) error {
 	args := []string{
 		"-I=.",
 		fmt.Sprintf("-I=%s/src/", gopath),
 		fmt.Sprintf("-I=%s/src/github.com/gogo/protobuf/protobuf", gopath),
 		fmt.Sprintf("-I=%s/src/%s/protobuf", gopath, lib.Hive[dep].Repo),
 		fmt.Sprintf("--gogofaster_out=plugins=grpc:%s/src", gopath),
-		fmt.Sprintf("%s/src/%s/protobuf/%s.proto",gopath, lib.Hive[dep].Repo, lib.Hive[dep].PkgName),
+		pbFile,
 	}
 	cmd := exec.Command("protoc", args...)
 	var out bytes.Buffer
@@ -46,7 +46,7 @@ func runProtoc(c *cli.Context) error {
 	lib, err := library.GetLibrary()
 
 	for _, dep := range config.Dependencies {
-		_ = protoc(lib, dep)
+		_ = protoc(lib, dep, fmt.Sprintf("%s/src/%s/protobuf/%s.proto",gopath, lib.Hive[dep].Repo, lib.Hive[dep].PkgName))
 	}
 
 	return nil

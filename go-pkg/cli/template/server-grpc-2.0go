@@ -2,7 +2,7 @@ package rpc
 
 import (
 	"fmt"
-	"{{.Repo}}/go-pkg/{{.PkgName}}"
+	rpc{{.PkgNameCamel}} "{{.Repo}}/go-pkg/rpc-{{.PkgName}}"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/reflection"
 	"log"
@@ -26,7 +26,7 @@ func Server_2_0() {
 		log.Fatalf("failed to listen: %v", err)
 	}
 	{
-		{{.PkgName}}.Register{{.PkgNameCamel}}Server(grpcServer, app)
+		rpc{{.PkgNameCamel}}.Register{{.PkgNameCamel}}Server(grpcServer, app)
 		reflection.Register(grpcServer)
 	}
 	fmt.Println("{{.PkgNameCamel}}Server Grpc 2.0 on port ", port)

@@ -16,6 +16,7 @@ type Cell struct {
 	Author string      `bson:"author" json:"author" yaml:"author"`
 	AuthorEmail string `bson:"authorEmail" json:"authorEmail" yaml:"authorEmail"`
 	Port int           `bson:"port" json:"port" yaml:"port"`
+	Public bool           `bson:"public" json:"public" yaml:"public"`
 }
 
 type Library struct {

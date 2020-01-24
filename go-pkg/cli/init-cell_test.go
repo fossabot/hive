@@ -16,14 +16,27 @@ func Test_createProtobuf(t *testing.T) {
 	}{
 		// TODO: Add test cases.
 		{
-			name: "regular1",
+			name: "hive server api",
 			args: args{cell:library.Cell{
-				Name:        "test-number-1",
-				PkgName:     "test",
-				Repo:        "github.com/benka-me/test-number-1",
+				Name:        "hive-server-api",
+				PkgName:     "api",
+				Repo:        "github.com/benka-me/hive-server-api",
 				Author:      "benka",
-				AuthorEmail: "test@gmail.com",
-				Port:        3456,
+				AuthorEmail: "benka.node@gmail.com",
+				Port:        8021,
+				Public: false,
+			}},
+		},
+		{
+			name: "hive server core",
+			args: args{cell:library.Cell{
+				Name:        "hive-server-core",
+				PkgName:     "core",
+				Repo:        "github.com/benka-me/hive-server-core",
+				Author:      "benka",
+				AuthorEmail: "benka.node@gmail.com",
+				Port:        8020,
+				Public: false,
 			}},
 		},
 	}
@@ -34,7 +47,7 @@ func Test_createProtobuf(t *testing.T) {
 				t.Error(err)
 			}
 
-			err = createFiles(tt.args.cell)
+			err = cellCreateFiles(tt.args.cell)
 			if err != nil {
 				t.Error(err)
 			}

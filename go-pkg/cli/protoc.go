@@ -2,6 +2,7 @@ package cli
 
 import (
 	"bytes"
+	"errors"
 	"fmt"
 	"github.com/benka-me/hive/go-pkg/library"
 	"github.com/benka-me/hive/go-pkg/yaml"
@@ -20,7 +21,7 @@ func protoc(lib library.Library, dep, pbFile string) error {
 		fmt.Sprintf("-I=%s/src/", gopath),
 		fmt.Sprintf("-I=%s/src/github.com/gogo/protobuf/protobuf", gopath),
 		fmt.Sprintf("-I=%s/src/%s/protobuf", gopath, lib.Hive[dep].Repo),
-		fmt.Sprintf("--gogofaster_out=plugins=grpc:%s/src", gopath),
+		fmt.Sprintf("--gogoslick_out=plugins=grpc:%s/src", gopath),
 		pbFile,
 	}
 	cmd := exec.Command("protoc", args...)
@@ -38,16 +39,25 @@ func protoc(lib library.Library, dep, pbFile string) error {
 }
 
 func runProtoc(c *cli.Context) error {
-	config, err := yaml.GetConfig()
+	lib, err := library.GetLibrary()
 	if err != nil {
 		return err
 	}
 
-	lib, err := library.GetLibrary()
-
-	for _, dep := range config.Dependencies {
-		_ = protoc(lib, dep, fmt.Sprintf("%s/src/%s/protobuf/%s.proto",gopath, lib.Hive[dep].Repo, lib.Hive[dep].PkgName))
+	config, err := yaml.GetHiveConfig()
+	if err == nil {
+		for _, dep := range config.Dependencies {
+			_ = protoc(lib, dep, fmt.Sprintf("%s/src/%s/protobuf/%s.proto",gopath, lib.Hive[dep].Repo, lib.Hive[dep].PkgName))
+		}
+	} else {
+		cell, err := yaml.GetCellConfig()
+		if err != nil {
+			return errors.New("no config file founded")
+		}
+		_ = protoc(lib, cell.Name, fmt.Sprintf("%s/src/%s/protobuf/%s.proto",gopath, cell.Repo, cell.PkgName))
+		_ = protoc(lib, cell.Name, fmt.Sprintf("%s/src/%s/protobuf/rpc-%s.proto",gopath, cell.Repo, cell.PkgName))
 	}
+
 
 	return nil
 }

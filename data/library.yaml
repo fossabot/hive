@@ -1,4 +1,13 @@
 hive:
+  cell-auth:
+    name: cell-auth
+    pkgName: auth
+    pkgNameCamel: Auth
+    repo: github.com/benka-me/cell-auth
+    author: benka
+    authorEmail: benka.node@gmail.com
+    port: 8022
+    public: false
   cell-dgraph:
     name: cell-dgraph
     pkgName: dgraph
@@ -7,6 +16,7 @@ hive:
     author: benka
     authorEmail: benka.node@gmail.com
     port: 4001
+    public: false
   cell-user:
     name: cell-user
     pkgName: user
@@ -15,6 +25,25 @@ hive:
     author: benka
     authorEmail: benka.node@gmail.com
     port: 3655
+    public: false
+  hive-server-api:
+    name: hive-server-api
+    pkgName: api
+    pkgNameCamel: ""
+    repo: github.com/benka-me/hive-server-api
+    author: benka
+    authorEmail: benka.node@gmail.com
+    port: 8021
+    public: false
+  hive-server-core:
+    name: hive-server-core
+    pkgName: core
+    pkgNameCamel: ""
+    repo: github.com/benka-me/hive-server-core
+    author: benka
+    authorEmail: benka.node@gmail.com
+    port: 8020
+    public: false
   test-number-1:
     name: test-number-1
     pkgName: test
@@ -23,3 +52,4 @@ hive:
     author: benka
     authorEmail: test@gmail.com
     port: 3456
+    public: false

@@ -7,3 +7,7 @@ message Request {
     string Msg = 1;
 }
 
+message Greeting {
+    string Msg = 1;
+}
+

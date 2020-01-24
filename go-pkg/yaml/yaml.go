@@ -14,10 +14,34 @@ type Config struct {
 	Repo string
 	Dependencies []string
 }
-const file = "./hive.yaml"
 var gopath = os.Getenv("GOPATH")
 
-func GetConfig() (Config, error) {
+func GetCellConfig() (library.Cell, error) {
+	const file = "./cell.yaml"
+	config := library.Cell{}
+
+	_, err := os.Stat(file)
+	if os.IsNotExist(err) {
+		return config, errors.New("no hive application detected, please create a new one or move to root directory of a hive application")
+	}
+
+	dat, err := ioutil.ReadFile(file)
+	if err != nil {
+		return config, err
+	}
+
+
+	err = yaml.Unmarshal(dat, &config)
+	if err != nil {
+		return config, err
+	}
+
+
+	return config, nil
+}
+
+func GetHiveConfig() (Config, error) {
+	const file = "./hive.yaml"
 	config := Config{}
 
 	_, err := os.Stat(file)
@@ -40,7 +64,7 @@ func GetConfig() (Config, error) {
 	return config, nil
 }
 
-func SaveConfig(config Config) error {
+func SaveConfig(config Config, file string) error {
 	data, err := yaml.Marshal(config)
 	if err != nil {
 		return err

@@ -52,7 +52,7 @@ func installUnits (lib library.Library, config *yaml.Config) error {
 }
 
 func runInstall(c *cli.Context) error {
-	config, err := yaml.GetConfig()
+	config, err := yaml.GetHiveConfig()
 	if err != nil {
 		return err
 	}
@@ -69,7 +69,7 @@ func runInstall(c *cli.Context) error {
 			return err
 		}
 
-		err = yaml.SaveConfig(config)
+		err = yaml.SaveConfig(config, "./hive.yaml")
 		if err != nil {
 			return err
 		}

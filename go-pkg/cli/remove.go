@@ -9,7 +9,7 @@ import (
 )
 
 func runRemove(c *cli.Context) error {
-	config, err := yaml.GetConfig()
+	config, err := yaml.GetHiveConfig()
 	if err != nil {
 		return err
 	}
@@ -25,7 +25,7 @@ func runRemove(c *cli.Context) error {
 			}
 		}
 
-		err = yaml.SaveConfig(config)
+		err = yaml.SaveConfig(config, "./hive.yaml")
 		if err != nil {
 			return err
 		}

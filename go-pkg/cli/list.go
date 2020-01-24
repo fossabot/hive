@@ -7,7 +7,7 @@ import (
 )
 
 func runList(c *cli.Context) error {
-	config, err := yaml.GetConfig()
+	config, err := yaml.GetHiveConfig()
 	if err != nil {
 		return err
 	}

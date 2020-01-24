@@ -77,7 +77,7 @@ func Step(title, validate string, custom stringValid) string {
 	return tmp
 }
 
-func askUser() (library.Cell, error) {
+func cellAskUser() (library.Cell, error) {
 	cell := library.Cell{}
 	v = validator.New()
 

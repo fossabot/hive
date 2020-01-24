@@ -13,7 +13,7 @@ import (
 
 
 func runInitCell(c *cli.Context) error {
-	cell, err := askUser()
+	cell, err := cellAskUser()
 	if err != nil {
 		return err
 	}
@@ -24,10 +24,10 @@ func runInitCell(c *cli.Context) error {
 		return err
 	}
 
-	return createFiles(cell)
+	return cellCreateFiles(cell)
 }
 
-func createFiles(cell library.Cell) error {
+func cellCreateFiles(cell library.Cell) error {
 	repoPath := fmt.Sprintf("%s/src/%s", gopath, cell.Repo)
 	var perm os.FileMode = 0777
 	cell.PkgNameCamel = strings.Title(kebabToCamelCase(cell.PkgName))
@@ -118,12 +118,23 @@ func createFiles(cell library.Cell) error {
 		return err
 	}
 
+	//generate hello-wordl.go
+	hello := Code{
+		Interface: cell,
+		Template:  fmt.Sprintf("%s/src/github.com/benka-me/hive/go-pkg/cli/template/hello-worldgo", gopath),
+		Target:    fmt.Sprintf("%s/go-pkg/http/rpc/hello-world.go", repoPath),
+		Name: "hello",
+	}
+	err = hello.generator()
+	if err != nil {
+		return err
+	}
+
 	lib, err := library.GetLibrary()
 	_ = protoc(lib, cell.Name, fmt.Sprintf("%s/src/%s/protobuf/%s.proto",gopath, cell.Repo, cell.PkgName))
 	_ = protoc(lib, cell.Name, fmt.Sprintf("%s/src/%s/protobuf/rpc-%s.proto",gopath, cell.Repo, cell.PkgName))
 
-	//copy hello-world.go
-	_, err = copy(fmt.Sprintf("%s/src/github.com/benka-me/hive/go-pkg/cli/template/hello-world.go", gopath), fmt.Sprintf("%s/src/%s/go-pkg/http/rpc/hello-world.go", gopath, cell.Repo))
+	//_, err = copy(fmt.Sprintf("%s/src/github.com/benka-me/hive/go-pkg/cli/template/hello-world.go", gopath), fmt.Sprintf("%s/src/%s/go-pkg/http/rpc/hello-world.go", gopath, cell.Repo))
 
 	return nil
 }

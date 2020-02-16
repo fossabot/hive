@@ -4,6 +4,8 @@ github.com/benka-me/cell-user v1.0.1 h1:Qg+NJzK+Jfu49SzbrVQzjkEIwCoGJSkTuB3ZzWte
 github.com/benka-me/cell-user v1.0.1/go.mod h1:GMbqQXM/aUBAaWs64Ycuk1po/45wxH5zQeOETYEjgJg=
 github.com/benka-me/hive-server-core v0.0.0-20200203192954-bdaef609d8e3 h1:6UxruvHmnMfQM0VEnLOjxtOEVVWpTDjpZWnwQOMIZPk=
 github.com/benka-me/hive-server-core v0.0.0-20200203192954-bdaef609d8e3/go.mod h1:YjqEGW8Yy18KXvTTB/0pocS0NP3mzrT9uKJslLZ76rA=
+github.com/benka-me/hive-server-core v1.0.0 h1:iShowjjOvyW6JORoOqLZ13Wu5jOFBffMrn+12MbobAM=
+github.com/benka-me/hive-server-core v1.0.0/go.mod h1:JcMUx42Z6f1jG5unJ8a7YKVLPve4io+2aDXFKTcdZBk=
 github.com/census-instrumentation/opencensus-proto v0.2.1/go.mod h1:f6KPmirojxKA12rnyqOA5BBL4O983OfeGPqjHWSTneU=
 github.com/client9/misspell v0.3.4/go.mod h1:qj6jICC3Q7zFZvVWo7KLAzC3yx5G7kyvSDkc90ppPyw=
 github.com/cpuguy83/go-md2man/v2 v2.0.0-20190314233015-f79a8a8ca69d h1:U+s90UTSYgptZMwQh2aRr3LuazLJIa+Pg3Kc1ylSYVY=

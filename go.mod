@@ -4,7 +4,7 @@ go 1.13
 
 require (
 	github.com/benka-me/cell-user v1.0.1
-	github.com/benka-me/hive-server-core v0.0.0-20200203192954-bdaef609d8e3
+	github.com/benka-me/hive-server-core v1.0.0
 	github.com/cpuguy83/go-md2man/v2 v2.0.0 // indirect
 	github.com/dgrijalva/jwt-go v3.2.0+incompatible // indirect
 	github.com/go-playground/universal-translator v0.17.0 // indirect

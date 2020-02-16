@@ -37,6 +37,7 @@ func RunLogin(c *cli.Context) error {
 		return err
 	}
 
+	fmt.Println("Success")
 	cnf := conf.Conf{
 		Username: res.Data.Username,
 		Token: res.Auth,

@@ -2,11 +2,13 @@ package cli
 
 import (
 	"errors"
-	"github.com/benka-me/hive-server-core/go-pkg/core"
 	"github.com/benka-me/hive/go-pkg/cli/initier"
 	"github.com/benka-me/hive/go-pkg/cli/install"
 	"github.com/benka-me/hive/go-pkg/cli/list"
+	"github.com/benka-me/hive/go-pkg/cli/privatish"
+	"github.com/benka-me/hive/go-pkg/cli/publish"
 	"github.com/benka-me/hive/go-pkg/cli/remove"
+	"github.com/benka-me/hive/go-pkg/hive"
 	"github.com/benka-me/hive/go-pkg/user"
 	"github.com/urfave/cli"
 	"log"
@@ -39,12 +41,12 @@ func Run()  {
 	app.Commands = cli.Commands{
 		{
 			Name:                   "init",
-			Usage:                  "init cell or hive",
+			Usage:                  "init bee or hive",
 			Subcommands: cli.Commands{
 				{
-					Name:   "cell",
-					Action: initier.Cell,
-					Usage:  "init cell (microservice)",
+					Name:   "bee",
+					Action: initier.Bee,
+					Usage:  "init bee (micro-service)",
 				},
 				{
 					Name:   "hive",
@@ -54,9 +56,19 @@ func Run()  {
 			},
 		},
 		{
+			Name:                   "publish",
+			Action: publish.Run,
+			Usage:                  "publish on hive-and-bees.com",
+		},
+		{
+			Name:                   "privatish",
+			Action: privatish.Run,
+			Usage:                  "privatish on hive-and-bees.com",
+		},
+		{
 			Name:                   "register",
 			Action: user.RunRegister,
-			Usage:                  "register to hivemicrocell.com",
+			Usage:                  "register to hive-micro-bee.com",
 		},
 		{
 			Name:                   "login",
@@ -72,11 +84,11 @@ func Run()  {
 			Name:    "protoc",
 			Aliases: []string{"proto", "gnr"},
 			Action: func(c *cli.Context) error {
-				cell, err := core.GetCell()
+				bee, err := hive.Getbee()
 				if err != nil {
-					return errors.New("no cell.yaml file founded")
+					return errors.New("no bee.yaml file founded")
 				}
-				cell.Protoc()
+				bee.Protoc()
 				return nil
 			},
 			Usage:   "generate protobuf files",

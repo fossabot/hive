@@ -2,7 +2,7 @@ package initier
 
 import (
 	"fmt"
-	"github.com/benka-me/hive-server-core/go-pkg/core"
+	"github.com/benka-me/core"
 	"testing"
 )
 

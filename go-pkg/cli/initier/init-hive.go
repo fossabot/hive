@@ -1,11 +1,16 @@
 package initier
 
 import (
-	"fmt"
+	"github.com/benka-me/hive/go-pkg/hive"
 	"github.com/urfave/cli"
 )
 
 func Hive(c *cli.Context) error {
-	fmt.Println("Init Cells")
+	hive := hive.InitHiveAskUser()
+
+	err := hive.SaveYaml()
+	if err != nil {
+		return err
+	}
 	return nil
 }

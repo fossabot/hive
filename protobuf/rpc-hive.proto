@@ -1,0 +1,9 @@
+syntax="proto3";
+package RpcHive;
+
+option go_package = "github.com/benka-me/hive/go-pkg/rpc-hive";
+
+import "github.com/benka-me/hive/protobuf/hive.proto";
+
+service Hive {
+}

@@ -24,6 +24,14 @@ func (c *Conf) Write() error {
 	return ioutil.WriteFile(file, b, 0644)
 }
 
+func Parse() Conf {
+	c := Conf{}
+	yamlFile, _ := ioutil.ReadFile(file)
+	_ = yaml.Unmarshal(yamlFile, &c)
+
+	return c
+}
+
 func (c *Conf) Parse() error {
 	if c == nil {
 		c = &Conf{}

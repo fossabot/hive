@@ -1,0 +1,30 @@
+name: hive
+pkgName: hive
+pkgNameCamel: Hive
+repo: github.com/benka-me/hive
+author: ""
+authorEmail: ""
+port: 8012
+public: false
+license: ""
+description: ""
+keywords: ""
+devlang: 0
+languages:
+  go:
+    setup:
+      active: true
+      repo: github.com/benka-me/hive
+      files:
+      - hive.proto
+      - rpc-hive.proto
+      pkgname: hive
+  javascript:
+    setup:
+      active: true
+      repo: github.com/benka-me/hive
+      files:
+      - hive.proto
+      - rpc-hive.proto
+      pkgname: hive
+isgateway: false

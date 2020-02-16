@@ -34,6 +34,26 @@ func fmtError (err string) string {
 	}
 }
 
+func GetPasswordTwice(title string) string {
+	fmt.Printf("%s : ", title)
+	password, err := terminal.ReadPassword(0)
+
+	if err != nil {
+		fmt.Println(err)
+		return GetPassword(title)
+	}
+	fmt.Printf("\n%s : ", "Confirm password")
+	confirm, err := terminal.ReadPassword(0)
+
+	if string(password) != string(confirm) {
+		fmt.Println("passwords don't match")
+		return GetPassword(title)
+	}
+
+	fmt.Println("")
+	return string(password)
+}
+
 func GetPassword(title string) string {
 	fmt.Printf("%s : ", title)
 	password, err := terminal.ReadPassword(0)
@@ -42,14 +62,8 @@ func GetPassword(title string) string {
 		fmt.Println(err)
 		return GetPassword(title)
 	}
-	fmt.Printf("%s : ", "Confirm password")
-	confirm, err := terminal.ReadPassword(0)
 
-	if string(password) != string(confirm) {
-		fmt.Println("passwords don't match")
-		return GetPassword(title)
-	}
-
+	fmt.Println("")
 	return string(password)
 }
 
@@ -74,4 +88,3 @@ func Step(title, validate string, custom stringValid) string {
 	}
 	return tmp
 }
-

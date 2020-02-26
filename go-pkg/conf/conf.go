@@ -13,6 +13,13 @@ type Conf struct {
 	Token string
 }
 
+type Bee struct {
+
+}
+type Hive struct {
+
+}
+
 var file = fmt.Sprintf("%s/.hive_conf.yaml", os.Getenv("HOME"))
 
 func (c *Conf) Write() error {

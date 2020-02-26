@@ -39,6 +39,9 @@ export class Bee extends jspb.Message {
   getKeywords(): string;
   setKeywords(value: string): void;
 
+  getTag(): string;
+  setTag(value: string): void;
+
   getDevlang(): DevLangMap[keyof DevLangMap];
   setDevlang(value: DevLangMap[keyof DevLangMap]): void;
 
@@ -73,9 +76,36 @@ export namespace Bee {
     license: string,
     description: string,
     keywords: string,
+    tag: string,
     devlang: DevLangMap[keyof DevLangMap],
     languages?: Languages.AsObject,
     isgateway: boolean,
+  }
+}
+
+export class Bees extends jspb.Message {
+  clearBeesList(): void;
+  getBeesList(): Array<Bee>;
+  setBeesList(value: Array<Bee>): void;
+  addBees(value?: Bee, index?: number): Bee;
+
+  getStatusmessage(): string;
+  setStatusmessage(value: string): void;
+
+  serializeBinary(): Uint8Array;
+  toObject(includeInstance?: boolean): Bees.AsObject;
+  static toObject(includeInstance: boolean, msg: Bees): Bees.AsObject;
+  static extensions: {[key: number]: jspb.ExtensionFieldInfo<jspb.Message>};
+  static extensionsBinary: {[key: number]: jspb.ExtensionFieldBinaryInfo<jspb.Message>};
+  static serializeBinaryToWriter(message: Bees, writer: jspb.BinaryWriter): void;
+  static deserializeBinary(bytes: Uint8Array): Bees;
+  static deserializeBinaryFromReader(message: Bees, reader: jspb.BinaryReader): Bees;
+}
+
+export namespace Bees {
+  export type AsObject = {
+    beesList: Array<Bee.AsObject>,
+    statusmessage: string,
   }
 }
 
@@ -102,6 +132,34 @@ export namespace BeeReq {
   export type AsObject = {
     token?: github_com_benka_me_cell_user_protobuf_user_pb.Token.AsObject,
     beename: string,
+  }
+}
+
+export class BeesReq extends jspb.Message {
+  hasToken(): boolean;
+  clearToken(): void;
+  getToken(): github_com_benka_me_cell_user_protobuf_user_pb.Token | undefined;
+  setToken(value?: github_com_benka_me_cell_user_protobuf_user_pb.Token): void;
+
+  clearBeenamesList(): void;
+  getBeenamesList(): Array<string>;
+  setBeenamesList(value: Array<string>): void;
+  addBeenames(value: string, index?: number): string;
+
+  serializeBinary(): Uint8Array;
+  toObject(includeInstance?: boolean): BeesReq.AsObject;
+  static toObject(includeInstance: boolean, msg: BeesReq): BeesReq.AsObject;
+  static extensions: {[key: number]: jspb.ExtensionFieldInfo<jspb.Message>};
+  static extensionsBinary: {[key: number]: jspb.ExtensionFieldBinaryInfo<jspb.Message>};
+  static serializeBinaryToWriter(message: BeesReq, writer: jspb.BinaryWriter): void;
+  static deserializeBinary(bytes: Uint8Array): BeesReq;
+  static deserializeBinaryFromReader(message: BeesReq, reader: jspb.BinaryReader): BeesReq;
+}
+
+export namespace BeesReq {
+  export type AsObject = {
+    token?: github_com_benka_me_cell_user_protobuf_user_pb.Token.AsObject,
+    beenamesList: Array<string>,
   }
 }
 

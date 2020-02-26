@@ -17,6 +17,11 @@ type Conf struct {
 
 var file = fmt.Sprintf("%s/.hive_conf.yaml", os.Getenv("HOME"))
 
+func Token() string {
+	c := Parse()
+	return c.Token
+}
+
 func (c *Conf) Write() error {
 	b, err := yaml.Marshal(c)
 	if err != nil {
@@ -28,8 +33,16 @@ func (c *Conf) Write() error {
 
 func Parse() Conf {
 	c := Conf{}
-	yamlFile, _ := ioutil.ReadFile(file)
-	_ = yaml.Unmarshal(yamlFile, &c)
+	yamlFile, err := ioutil.ReadFile(file)
+	if err != nil {
+		fmt.Println(err)
+		os.Exit(1)
+	}
+	err = yaml.Unmarshal(yamlFile, &c)
+	if err != nil {
+		fmt.Println(err)
+		os.Exit(1)
+	}
 
 	return c
 }

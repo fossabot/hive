@@ -36,9 +36,19 @@ message Bee {
     bool IsGateway = 15;
 }
 
+message Bees {
+    repeated Bee Bees = 1;
+    string StatusMessage = 2;
+}
+
 message BeeReq {
     user.Token Token = 1;
     string BeeName = 2;
+}
+
+message BeesReq {
+    user.Token Token = 1;
+    repeated string BeeNames = 2;
 }
 
 message Dep {

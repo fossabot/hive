@@ -15,7 +15,7 @@ var gopath = os.Getenv("GOPATH")
 func GetHiveMust() Hive {
 	h, err := GetHive()
 	if err != nil {
-		fmt.Println("hive.yaml not found")
+		fmt.Println("hive.yaml not found ", err)
 		os.Exit(1)
 	}
 	return h

@@ -11,14 +11,9 @@ import (
 type Conf struct {
 	Username string
 	Token string
+	Hives map[string]string
 }
 
-type Bee struct {
-
-}
-type Hive struct {
-
-}
 
 var file = fmt.Sprintf("%s/.hive_conf.yaml", os.Getenv("HOME"))
 

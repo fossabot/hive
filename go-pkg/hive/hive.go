@@ -12,6 +12,15 @@ import (
 
 var gopath = os.Getenv("GOPATH")
 
+func GetHiveMust() Hive {
+	h, err := GetHive()
+	if err != nil {
+		fmt.Println("hive.yaml not found")
+		os.Exit(1)
+	}
+	return h
+}
+
 func GetHive() (Hive, error) {
 	hive := Hive{}
 	dat, err := ioutil.ReadFile("./hive.yaml")

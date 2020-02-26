@@ -35,9 +35,15 @@ message Bee {
     bool IsGateway = 15;
 }
 
-message BeeName {
-    string Author = 1;
-    string Name = 2;
+message BeeReq {
+    user.Token Token = 1;
+    string BeeName = 2;
+}
+
+message Dep {
+    int32 Port = 1;
+    string Dev = 2;
+    string Prod = 3;
 }
 
 message Hive {
@@ -47,8 +53,7 @@ message Hive {
     string Repo = 4 [(gogoproto.moretags) = "bson:\"repo,omitempty\" json:\"repo\" yaml:\"repo\""];
     string Author = 5 [(gogoproto.moretags) = "bson:\"author,omitempty\" json:\"author\" yaml:\"author\""];
     bool Public = 8 [(gogoproto.moretags) = "bson:\"public,omitempty\" json:\"public\" yaml:\"public\""];
-    repeated BeeName Deps = 9;
-    BeeName Gateway = 10;
+    map<string, Dep> Deps = 9;
 }
 
 message Languages {

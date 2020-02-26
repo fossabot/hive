@@ -8,6 +8,7 @@ import (
 	user "github.com/benka-me/cell-user/go-pkg/user"
 	_ "github.com/gogo/protobuf/gogoproto"
 	proto "github.com/gogo/protobuf/proto"
+	github_com_gogo_protobuf_sortkeys "github.com/gogo/protobuf/sortkeys"
 	io "io"
 	math "math"
 	math_bits "math/bits"
@@ -219,22 +220,22 @@ func (m *Bee) GetIsGateway() bool {
 	return false
 }
 
-type BeeName struct {
-	Author string `protobuf:"bytes,1,opt,name=Author,proto3" json:"Author,omitempty"`
-	Name   string `protobuf:"bytes,2,opt,name=Name,proto3" json:"Name,omitempty"`
+type BeeReq struct {
+	Token   *user.Token `protobuf:"bytes,1,opt,name=Token,proto3" json:"Token,omitempty"`
+	BeeName string      `protobuf:"bytes,2,opt,name=BeeName,proto3" json:"BeeName,omitempty"`
 }
 
-func (m *BeeName) Reset()      { *m = BeeName{} }
-func (*BeeName) ProtoMessage() {}
-func (*BeeName) Descriptor() ([]byte, []int) {
+func (m *BeeReq) Reset()      { *m = BeeReq{} }
+func (*BeeReq) ProtoMessage() {}
+func (*BeeReq) Descriptor() ([]byte, []int) {
 	return fileDescriptor_d635d1ead41ba02c, []int{1}
 }
-func (m *BeeName) XXX_Unmarshal(b []byte) error {
+func (m *BeeReq) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
 }
-func (m *BeeName) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+func (m *BeeReq) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
 	if deterministic {
-		return xxx_messageInfo_BeeName.Marshal(b, m, deterministic)
+		return xxx_messageInfo_BeeReq.Marshal(b, m, deterministic)
 	} else {
 		b = b[:cap(b)]
 		n, err := m.MarshalToSizedBuffer(b)
@@ -244,47 +245,105 @@ func (m *BeeName) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
 		return b[:n], nil
 	}
 }
-func (m *BeeName) XXX_Merge(src proto.Message) {
-	xxx_messageInfo_BeeName.Merge(m, src)
+func (m *BeeReq) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_BeeReq.Merge(m, src)
 }
-func (m *BeeName) XXX_Size() int {
+func (m *BeeReq) XXX_Size() int {
 	return m.Size()
 }
-func (m *BeeName) XXX_DiscardUnknown() {
-	xxx_messageInfo_BeeName.DiscardUnknown(m)
+func (m *BeeReq) XXX_DiscardUnknown() {
+	xxx_messageInfo_BeeReq.DiscardUnknown(m)
 }
 
-var xxx_messageInfo_BeeName proto.InternalMessageInfo
+var xxx_messageInfo_BeeReq proto.InternalMessageInfo
 
-func (m *BeeName) GetAuthor() string {
+func (m *BeeReq) GetToken() *user.Token {
 	if m != nil {
-		return m.Author
+		return m.Token
+	}
+	return nil
+}
+
+func (m *BeeReq) GetBeeName() string {
+	if m != nil {
+		return m.BeeName
 	}
 	return ""
 }
 
-func (m *BeeName) GetName() string {
+type Dep struct {
+	Port int32  `protobuf:"varint,1,opt,name=Port,proto3" json:"Port,omitempty"`
+	Dev  string `protobuf:"bytes,2,opt,name=Dev,proto3" json:"Dev,omitempty"`
+	Prod string `protobuf:"bytes,3,opt,name=Prod,proto3" json:"Prod,omitempty"`
+}
+
+func (m *Dep) Reset()      { *m = Dep{} }
+func (*Dep) ProtoMessage() {}
+func (*Dep) Descriptor() ([]byte, []int) {
+	return fileDescriptor_d635d1ead41ba02c, []int{2}
+}
+func (m *Dep) XXX_Unmarshal(b []byte) error {
+	return m.Unmarshal(b)
+}
+func (m *Dep) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	if deterministic {
+		return xxx_messageInfo_Dep.Marshal(b, m, deterministic)
+	} else {
+		b = b[:cap(b)]
+		n, err := m.MarshalToSizedBuffer(b)
+		if err != nil {
+			return nil, err
+		}
+		return b[:n], nil
+	}
+}
+func (m *Dep) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_Dep.Merge(m, src)
+}
+func (m *Dep) XXX_Size() int {
+	return m.Size()
+}
+func (m *Dep) XXX_DiscardUnknown() {
+	xxx_messageInfo_Dep.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_Dep proto.InternalMessageInfo
+
+func (m *Dep) GetPort() int32 {
 	if m != nil {
-		return m.Name
+		return m.Port
+	}
+	return 0
+}
+
+func (m *Dep) GetDev() string {
+	if m != nil {
+		return m.Dev
+	}
+	return ""
+}
+
+func (m *Dep) GetProd() string {
+	if m != nil {
+		return m.Prod
 	}
 	return ""
 }
 
 type Hive struct {
-	Name         string     `protobuf:"bytes,1,opt,name=Name,proto3" json:"Name,omitempty" bson:"name,omitempty" json:"name" yaml:"name"`
-	PkgName      string     `protobuf:"bytes,2,opt,name=PkgName,proto3" json:"PkgName,omitempty" bson:"pkgName,omitempty" json:"pkgName" yaml:"pkgName"`
-	PkgNameCamel string     `protobuf:"bytes,3,opt,name=PkgNameCamel,proto3" json:"PkgNameCamel,omitempty" bson:"pkgNameCamel,omitempty" json:"pkgNameCamel" yaml:"pkgNameCamel"`
-	Repo         string     `protobuf:"bytes,4,opt,name=Repo,proto3" json:"Repo,omitempty" bson:"repo,omitempty" json:"repo" yaml:"repo"`
-	Author       string     `protobuf:"bytes,5,opt,name=Author,proto3" json:"Author,omitempty" bson:"author,omitempty" json:"author" yaml:"author"`
-	Public       bool       `protobuf:"varint,8,opt,name=Public,proto3" json:"Public,omitempty" bson:"public,omitempty" json:"public" yaml:"public"`
-	Deps         []*BeeName `protobuf:"bytes,9,rep,name=Deps,proto3" json:"Deps,omitempty"`
-	Gateway      *BeeName   `protobuf:"bytes,10,opt,name=Gateway,proto3" json:"Gateway,omitempty"`
+	Name         string          `protobuf:"bytes,1,opt,name=Name,proto3" json:"Name,omitempty" bson:"name,omitempty" json:"name" yaml:"name"`
+	PkgName      string          `protobuf:"bytes,2,opt,name=PkgName,proto3" json:"PkgName,omitempty" bson:"pkgName,omitempty" json:"pkgName" yaml:"pkgName"`
+	PkgNameCamel string          `protobuf:"bytes,3,opt,name=PkgNameCamel,proto3" json:"PkgNameCamel,omitempty" bson:"pkgNameCamel,omitempty" json:"pkgNameCamel" yaml:"pkgNameCamel"`
+	Repo         string          `protobuf:"bytes,4,opt,name=Repo,proto3" json:"Repo,omitempty" bson:"repo,omitempty" json:"repo" yaml:"repo"`
+	Author       string          `protobuf:"bytes,5,opt,name=Author,proto3" json:"Author,omitempty" bson:"author,omitempty" json:"author" yaml:"author"`
+	Public       bool            `protobuf:"varint,8,opt,name=Public,proto3" json:"Public,omitempty" bson:"public,omitempty" json:"public" yaml:"public"`
+	Deps         map[string]*Dep `protobuf:"bytes,9,rep,name=Deps,proto3" json:"Deps,omitempty" protobuf_key:"bytes,1,opt,name=key,proto3" protobuf_val:"bytes,2,opt,name=value,proto3"`
 }
 
 func (m *Hive) Reset()      { *m = Hive{} }
 func (*Hive) ProtoMessage() {}
 func (*Hive) Descriptor() ([]byte, []int) {
-	return fileDescriptor_d635d1ead41ba02c, []int{2}
+	return fileDescriptor_d635d1ead41ba02c, []int{3}
 }
 func (m *Hive) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
@@ -355,16 +414,9 @@ func (m *Hive) GetPublic() bool {
 	return false
 }
 
-func (m *Hive) GetDeps() []*BeeName {
+func (m *Hive) GetDeps() map[string]*Dep {
 	if m != nil {
 		return m.Deps
-	}
-	return nil
-}
-
-func (m *Hive) GetGateway() *BeeName {
-	if m != nil {
-		return m.Gateway
 	}
 	return nil
 }
@@ -377,7 +429,7 @@ type Languages struct {
 func (m *Languages) Reset()      { *m = Languages{} }
 func (*Languages) ProtoMessage() {}
 func (*Languages) Descriptor() ([]byte, []int) {
-	return fileDescriptor_d635d1ead41ba02c, []int{3}
+	return fileDescriptor_d635d1ead41ba02c, []int{4}
 }
 func (m *Languages) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
@@ -430,7 +482,7 @@ type LanguageSetup struct {
 func (m *LanguageSetup) Reset()      { *m = LanguageSetup{} }
 func (*LanguageSetup) ProtoMessage() {}
 func (*LanguageSetup) Descriptor() ([]byte, []int) {
-	return fileDescriptor_d635d1ead41ba02c, []int{4}
+	return fileDescriptor_d635d1ead41ba02c, []int{5}
 }
 func (m *LanguageSetup) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
@@ -494,7 +546,7 @@ type Go struct {
 func (m *Go) Reset()      { *m = Go{} }
 func (*Go) ProtoMessage() {}
 func (*Go) Descriptor() ([]byte, []int) {
-	return fileDescriptor_d635d1ead41ba02c, []int{5}
+	return fileDescriptor_d635d1ead41ba02c, []int{6}
 }
 func (m *Go) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
@@ -537,7 +589,7 @@ type Javascript struct {
 func (m *Javascript) Reset()      { *m = Javascript{} }
 func (*Javascript) ProtoMessage() {}
 func (*Javascript) Descriptor() ([]byte, []int) {
-	return fileDescriptor_d635d1ead41ba02c, []int{6}
+	return fileDescriptor_d635d1ead41ba02c, []int{7}
 }
 func (m *Javascript) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
@@ -580,7 +632,7 @@ type Python struct {
 func (m *Python) Reset()      { *m = Python{} }
 func (*Python) ProtoMessage() {}
 func (*Python) Descriptor() ([]byte, []int) {
-	return fileDescriptor_d635d1ead41ba02c, []int{7}
+	return fileDescriptor_d635d1ead41ba02c, []int{8}
 }
 func (m *Python) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
@@ -623,7 +675,7 @@ type Java struct {
 func (m *Java) Reset()      { *m = Java{} }
 func (*Java) ProtoMessage() {}
 func (*Java) Descriptor() ([]byte, []int) {
-	return fileDescriptor_d635d1ead41ba02c, []int{8}
+	return fileDescriptor_d635d1ead41ba02c, []int{9}
 }
 func (m *Java) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
@@ -666,7 +718,7 @@ type CPP struct {
 func (m *CPP) Reset()      { *m = CPP{} }
 func (*CPP) ProtoMessage() {}
 func (*CPP) Descriptor() ([]byte, []int) {
-	return fileDescriptor_d635d1ead41ba02c, []int{9}
+	return fileDescriptor_d635d1ead41ba02c, []int{10}
 }
 func (m *CPP) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
@@ -709,7 +761,7 @@ type CSharp struct {
 func (m *CSharp) Reset()      { *m = CSharp{} }
 func (*CSharp) ProtoMessage() {}
 func (*CSharp) Descriptor() ([]byte, []int) {
-	return fileDescriptor_d635d1ead41ba02c, []int{10}
+	return fileDescriptor_d635d1ead41ba02c, []int{11}
 }
 func (m *CSharp) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
@@ -752,7 +804,7 @@ type ObjectiveC struct {
 func (m *ObjectiveC) Reset()      { *m = ObjectiveC{} }
 func (*ObjectiveC) ProtoMessage() {}
 func (*ObjectiveC) Descriptor() ([]byte, []int) {
-	return fileDescriptor_d635d1ead41ba02c, []int{11}
+	return fileDescriptor_d635d1ead41ba02c, []int{12}
 }
 func (m *ObjectiveC) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
@@ -795,7 +847,7 @@ type Ruby struct {
 func (m *Ruby) Reset()      { *m = Ruby{} }
 func (*Ruby) ProtoMessage() {}
 func (*Ruby) Descriptor() ([]byte, []int) {
-	return fileDescriptor_d635d1ead41ba02c, []int{12}
+	return fileDescriptor_d635d1ead41ba02c, []int{13}
 }
 func (m *Ruby) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
@@ -838,7 +890,7 @@ type Dart struct {
 func (m *Dart) Reset()      { *m = Dart{} }
 func (*Dart) ProtoMessage() {}
 func (*Dart) Descriptor() ([]byte, []int) {
-	return fileDescriptor_d635d1ead41ba02c, []int{13}
+	return fileDescriptor_d635d1ead41ba02c, []int{14}
 }
 func (m *Dart) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
@@ -881,7 +933,7 @@ type PHP struct {
 func (m *PHP) Reset()      { *m = PHP{} }
 func (*PHP) ProtoMessage() {}
 func (*PHP) Descriptor() ([]byte, []int) {
-	return fileDescriptor_d635d1ead41ba02c, []int{14}
+	return fileDescriptor_d635d1ead41ba02c, []int{15}
 }
 func (m *PHP) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
@@ -925,7 +977,7 @@ type PushBee struct {
 func (m *PushBee) Reset()      { *m = PushBee{} }
 func (*PushBee) ProtoMessage() {}
 func (*PushBee) Descriptor() ([]byte, []int) {
-	return fileDescriptor_d635d1ead41ba02c, []int{15}
+	return fileDescriptor_d635d1ead41ba02c, []int{16}
 }
 func (m *PushBee) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
@@ -976,7 +1028,7 @@ type PushHive struct {
 func (m *PushHive) Reset()      { *m = PushHive{} }
 func (*PushHive) ProtoMessage() {}
 func (*PushHive) Descriptor() ([]byte, []int) {
-	return fileDescriptor_d635d1ead41ba02c, []int{16}
+	return fileDescriptor_d635d1ead41ba02c, []int{17}
 }
 func (m *PushHive) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
@@ -1026,7 +1078,7 @@ type PushBeeRes struct {
 func (m *PushBeeRes) Reset()      { *m = PushBeeRes{} }
 func (*PushBeeRes) ProtoMessage() {}
 func (*PushBeeRes) Descriptor() ([]byte, []int) {
-	return fileDescriptor_d635d1ead41ba02c, []int{17}
+	return fileDescriptor_d635d1ead41ba02c, []int{18}
 }
 func (m *PushBeeRes) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
@@ -1069,7 +1121,7 @@ type PushHiveRes struct {
 func (m *PushHiveRes) Reset()      { *m = PushHiveRes{} }
 func (*PushHiveRes) ProtoMessage() {}
 func (*PushHiveRes) Descriptor() ([]byte, []int) {
-	return fileDescriptor_d635d1ead41ba02c, []int{18}
+	return fileDescriptor_d635d1ead41ba02c, []int{19}
 }
 func (m *PushHiveRes) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
@@ -1108,8 +1160,10 @@ func (m *PushHiveRes) GetId() string {
 func init() {
 	proto.RegisterEnum("hive.DevLang", DevLang_name, DevLang_value)
 	proto.RegisterType((*Bee)(nil), "hive.Bee")
-	proto.RegisterType((*BeeName)(nil), "hive.BeeName")
+	proto.RegisterType((*BeeReq)(nil), "hive.BeeReq")
+	proto.RegisterType((*Dep)(nil), "hive.Dep")
 	proto.RegisterType((*Hive)(nil), "hive.Hive")
+	proto.RegisterMapType((map[string]*Dep)(nil), "hive.Hive.DepsEntry")
 	proto.RegisterType((*Languages)(nil), "hive.Languages")
 	proto.RegisterType((*LanguageSetup)(nil), "hive.LanguageSetup")
 	proto.RegisterType((*Go)(nil), "hive.Go")
@@ -1131,72 +1185,76 @@ func init() {
 func init() { proto.RegisterFile("hive.proto", fileDescriptor_d635d1ead41ba02c) }
 
 var fileDescriptor_d635d1ead41ba02c = []byte{
-	// 1033 bytes of a gzipped FileDescriptorProto
-	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0xec, 0x56, 0x4f, 0x6f, 0x1b, 0x45,
-	0x14, 0xf7, 0xda, 0xeb, 0xd8, 0x9e, 0xa5, 0xc9, 0x6a, 0x40, 0x68, 0x55, 0x95, 0xb5, 0xbb, 0x54,
-	0xaa, 0x41, 0x38, 0x6e, 0x12, 0x41, 0x45, 0x11, 0x07, 0x9c, 0xa4, 0x69, 0xa0, 0x22, 0xd6, 0xa4,
-	0x12, 0xa2, 0x97, 0xd5, 0xda, 0x1e, 0xec, 0x8d, 0xbd, 0x9e, 0xd5, 0xfe, 0x71, 0xe5, 0x1b, 0x12,
-	0x5f, 0x80, 0x8f, 0xc1, 0x99, 0x2f, 0x41, 0x8f, 0x39, 0xf6, 0x64, 0x11, 0xe7, 0xc2, 0xb1, 0xf2,
-	0x27, 0x40, 0xf3, 0x66, 0x76, 0xbd, 0xb1, 0x53, 0x09, 0x4b, 0x5c, 0x90, 0x38, 0xe5, 0xbd, 0xf7,
-	0x7b, 0xef, 0xf7, 0x3c, 0x6f, 0x7e, 0xfb, 0x32, 0x08, 0x0d, 0xdc, 0x09, 0xdd, 0xf5, 0x03, 0x16,
-	0x31, 0xac, 0x72, 0xfb, 0x6e, 0xa3, 0xef, 0x46, 0x83, 0xb8, 0xb3, 0xdb, 0x65, 0x5e, 0xb3, 0xcf,
-	0xfa, 0xac, 0x09, 0x60, 0x27, 0xfe, 0x09, 0x3c, 0x70, 0xc0, 0x12, 0x45, 0x77, 0xf7, 0x32, 0xe9,
-	0x1d, 0x3a, 0x1e, 0x3a, 0x0d, 0x8f, 0x36, 0xbb, 0x74, 0x34, 0x6a, 0xc4, 0x21, 0x0d, 0x96, 0xc5,
-	0xdc, 0x13, 0x25, 0xd6, 0xef, 0x65, 0x54, 0x68, 0x51, 0x8a, 0x8f, 0x91, 0xfa, 0xbd, 0xe3, 0x51,
-	0x43, 0xa9, 0x29, 0xf5, 0x4a, 0x6b, 0x6f, 0x31, 0xab, 0x36, 0x3a, 0x21, 0x1b, 0x3f, 0xb1, 0xc6,
-	0x8e, 0x47, 0x3f, 0x63, 0x9e, 0x1b, 0x51, 0xcf, 0x8f, 0xa6, 0x56, 0xed, 0x22, 0x8d, 0x5a, 0xb5,
-	0xa9, 0xe3, 0x8d, 0xa4, 0x4d, 0xa0, 0x1c, 0xbf, 0x40, 0xa5, 0xf6, 0xb0, 0x0f, 0x4c, 0x79, 0x60,
-	0x7a, 0xb2, 0x98, 0x55, 0xbf, 0x10, 0x4c, 0xbe, 0x00, 0xd6, 0xc9, 0x24, 0x90, 0xf0, 0x25, 0x2e,
-	0x49, 0xa8, 0xb0, 0x87, 0xde, 0x93, 0xe6, 0xa1, 0xe3, 0xd1, 0x91, 0x51, 0x00, 0xea, 0xd3, 0xc5,
-	0xac, 0x7a, 0x7c, 0x83, 0x1a, 0xd0, 0x77, 0xf2, 0x03, 0xba, 0xd2, 0x44, 0xc4, 0xc8, 0x0d, 0x7a,
-	0x3e, 0x0b, 0x42, 0x7d, 0x66, 0xa8, 0xab, 0xb3, 0x08, 0xa8, 0xcf, 0xd6, 0xe9, 0x79, 0x34, 0xa1,
-	0x05, 0x9b, 0x40, 0x39, 0x3e, 0x43, 0x5b, 0xdf, 0xc4, 0xd1, 0x80, 0x05, 0x46, 0x11, 0x88, 0x1e,
-	0x2f, 0x66, 0xd5, 0x03, 0x41, 0xe4, 0x40, 0x7c, 0x9d, 0x4a, 0xc4, 0x13, 0x32, 0xe9, 0x11, 0x49,
-	0x83, 0x07, 0x48, 0x13, 0xd6, 0xb1, 0xe7, 0xb8, 0x23, 0x63, 0x0b, 0x58, 0x9f, 0x2e, 0x66, 0xd5,
-	0x56, 0x96, 0x15, 0xc0, 0x77, 0x51, 0x03, 0x78, 0x93, 0x5f, 0x84, 0x48, 0x96, 0x1a, 0x7f, 0x85,
-	0xd4, 0x36, 0x0b, 0x22, 0xa3, 0x54, 0x53, 0xea, 0xc5, 0xd6, 0xc3, 0xc5, 0xac, 0xfa, 0xb1, 0x1c,
-	0x34, 0x0b, 0xa2, 0x74, 0xac, 0x60, 0xcb, 0x71, 0x72, 0x9b, 0x40, 0x11, 0x3f, 0x77, 0x3b, 0xee,
-	0x8c, 0xdc, 0xae, 0x51, 0xae, 0x29, 0xf5, 0x72, 0xf6, 0xdc, 0x3e, 0xc4, 0x6f, 0xb9, 0x21, 0x88,
-	0xa7, 0x64, 0xc2, 0x23, 0x92, 0x86, 0x8b, 0xea, 0xb9, 0xdb, 0xa5, 0xe3, 0x90, 0x1a, 0x95, 0x55,
-	0x51, 0x8d, 0x04, 0xb0, 0x4e, 0x29, 0x81, 0x84, 0x33, 0x71, 0x49, 0x42, 0xc5, 0xa7, 0x79, 0x44,
-	0xc3, 0x6e, 0xe0, 0xfa, 0x91, 0xcb, 0xc6, 0x06, 0x5a, 0x9d, 0x66, 0x6f, 0x09, 0xae, 0xb3, 0x67,
-	0xc0, 0xa4, 0x43, 0x36, 0x44, 0xb2, 0xd4, 0xf8, 0x47, 0x54, 0xfe, 0x8e, 0x4e, 0x5f, 0xb1, 0xa0,
-	0x17, 0x1a, 0x1a, 0xb4, 0xf9, 0x7a, 0x31, 0xab, 0x7e, 0x29, 0xda, 0x0c, 0x25, 0xb2, 0xde, 0x23,
-	0x41, 0x92, 0x06, 0xa9, 0x4f, 0x52, 0x3a, 0xfc, 0x10, 0x95, 0x8e, 0xe8, 0xe4, 0xb9, 0x33, 0xee,
-	0x1b, 0x77, 0x6a, 0x4a, 0x7d, 0x7b, 0xff, 0xce, 0x2e, 0x2c, 0x11, 0x19, 0x24, 0x09, 0x8a, 0x1b,
-	0xa8, 0xc2, 0xff, 0xc6, 0x4e, 0x9f, 0x86, 0xc6, 0x76, 0x4d, 0xa9, 0x6b, 0xfb, 0x3b, 0x22, 0x35,
-	0x0d, 0x93, 0x65, 0x06, 0xbe, 0x87, 0x2a, 0xa7, 0xe1, 0x89, 0x13, 0xd1, 0x57, 0xce, 0xd4, 0xd8,
-	0xe1, 0xd7, 0x48, 0x96, 0x01, 0xeb, 0x73, 0x54, 0x6a, 0x51, 0x0a, 0x9f, 0xe6, 0x87, 0xa9, 0xc8,
-	0x61, 0x73, 0xa4, 0x5a, 0xc5, 0x72, 0x9f, 0xc0, 0x16, 0x10, 0xcb, 0xc1, 0xfa, 0x43, 0x45, 0xea,
-	0x33, 0x77, 0xf2, 0xff, 0xb2, 0xf9, 0x2f, 0x2c, 0x9b, 0x7f, 0xfd, 0x2b, 0xbe, 0x8f, 0xd4, 0x23,
-	0xea, 0x87, 0x46, 0xa5, 0x56, 0xa8, 0x6b, 0x89, 0x4e, 0xa5, 0x8c, 0x08, 0x40, 0x5c, 0xcd, 0x89,
-	0xe6, 0x10, 0x48, 0x74, 0x25, 0x2b, 0x41, 0xad, 0x1f, 0x32, 0x6a, 0xc6, 0x06, 0xca, 0x9f, 0x30,
-	0xd0, 0x92, 0xb6, 0x5f, 0x16, 0x05, 0x27, 0x8c, 0xe4, 0x4f, 0x18, 0x7e, 0x84, 0xd0, 0xb7, 0xce,
-	0xc4, 0x11, 0x5f, 0x22, 0x68, 0x44, 0xdb, 0xd7, 0x45, 0xc6, 0x32, 0x4e, 0x32, 0x39, 0xd6, 0x10,
-	0xdd, 0x49, 0x88, 0xcf, 0x69, 0x14, 0xfb, 0xa0, 0xef, 0x6e, 0xe4, 0x4e, 0x84, 0x58, 0xcb, 0x44,
-	0x7a, 0x5c, 0xdf, 0x70, 0x6d, 0x52, 0xdf, 0x70, 0x07, 0x1f, 0xa0, 0xe2, 0x53, 0x77, 0x44, 0x43,
-	0xa3, 0x50, 0x2b, 0xd4, 0x2b, 0x44, 0x38, 0xd8, 0x58, 0xaa, 0x14, 0xee, 0x38, 0x55, 0x9a, 0xd5,
-	0xe4, 0x3f, 0x1c, 0x7f, 0x82, 0x8a, 0xd0, 0x4a, 0x9e, 0xe0, 0xfd, 0x9b, 0x5f, 0x25, 0x40, 0x44,
-	0x64, 0x58, 0x8f, 0xb3, 0xe7, 0xd9, 0xa4, 0xf0, 0x00, 0x6d, 0xb5, 0xa7, 0xd1, 0x80, 0x8d, 0x37,
-	0x29, 0xda, 0x43, 0x2a, 0xef, 0xb6, 0x49, 0xc9, 0x23, 0x54, 0x38, 0x6c, 0xb7, 0x37, 0xfc, 0x65,
-	0x87, 0xe7, 0x03, 0x27, 0xf0, 0x37, 0x9c, 0xc3, 0x59, 0xe7, 0x82, 0xc2, 0x4d, 0x1c, 0x6e, 0x78,
-	0x24, 0x12, 0x77, 0xa6, 0x1b, 0x96, 0x1c, 0x39, 0x41, 0xb4, 0xe1, 0x14, 0xda, 0xcf, 0x36, 0x9a,
-	0xc2, 0x19, 0x2a, 0xb5, 0xe3, 0x70, 0xc0, 0x1f, 0x62, 0xf7, 0xe1, 0x3d, 0x26, 0x6b, 0x2a, 0xa9,
-	0xfe, 0x5b, 0xea, 0xeb, 0x59, 0x35, 0x47, 0x0a, 0x22, 0xa5, 0xf8, 0x82, 0x0d, 0xe9, 0x58, 0x2a,
-	0x5a, 0xdb, 0x85, 0xf7, 0x1c, 0x84, 0x88, 0x40, 0xac, 0x73, 0x54, 0xe6, 0x84, 0xb0, 0x6d, 0x1f,
-	0x88, 0xad, 0x2b, 0x29, 0x91, 0xa0, 0xe4, 0x11, 0xc9, 0x29, 0x76, 0xf2, 0x3f, 0x20, 0xbd, 0x87,
-	0x90, 0xfc, 0x95, 0x84, 0x86, 0x78, 0x1b, 0xe5, 0x4f, 0x7b, 0x72, 0xeb, 0xe7, 0x4f, 0x7b, 0xd6,
-	0x47, 0x48, 0x4b, 0x5a, 0xde, 0x02, 0x7f, 0xfa, 0x8b, 0x92, 0xfe, 0xab, 0xc2, 0x25, 0x54, 0xe8,
-	0x33, 0x5b, 0xcf, 0xe1, 0x1d, 0xa4, 0x5d, 0xa4, 0x82, 0xb6, 0x75, 0x05, 0x6b, 0xa8, 0xe4, 0x83,
-	0x50, 0x6d, 0x3d, 0x8f, 0x2b, 0xa8, 0xc8, 0x51, 0x5b, 0x2f, 0xe0, 0x32, 0x52, 0xbb, 0xbe, 0x6f,
-	0xeb, 0x2a, 0xcf, 0xe8, 0x86, 0x5c, 0x30, 0xb6, 0x5e, 0xe4, 0xf5, 0x2c, 0x11, 0x42, 0xd7, 0xd6,
-	0xb7, 0x78, 0x49, 0x10, 0x77, 0xa6, 0xb6, 0x5e, 0xe2, 0x66, 0xcf, 0x09, 0x22, 0x5b, 0x2f, 0xf3,
-	0x6a, 0x7f, 0xe0, 0xdb, 0x7a, 0xa5, 0xf5, 0xf2, 0xf2, 0xca, 0xcc, 0xbd, 0xb9, 0x32, 0x73, 0x6f,
-	0xaf, 0x4c, 0xe5, 0xe7, 0xb9, 0xa9, 0xfc, 0x36, 0x37, 0x95, 0xd7, 0x73, 0x53, 0xb9, 0x9c, 0x9b,
-	0xca, 0x9f, 0x73, 0x53, 0xf9, 0x6b, 0x6e, 0xe6, 0xde, 0xce, 0x4d, 0xe5, 0xd7, 0x6b, 0x33, 0x77,
-	0x79, 0x6d, 0xe6, 0xde, 0x5c, 0x9b, 0xb9, 0x97, 0x0f, 0x6e, 0x7b, 0x57, 0xf3, 0x31, 0x36, 0xfb,
-	0xac, 0xe1, 0x0f, 0xfb, 0x60, 0x77, 0xb6, 0xe0, 0x45, 0x7d, 0xf0, 0x77, 0x00, 0x00, 0x00, 0xff,
-	0xff, 0x33, 0xf4, 0xbc, 0x5d, 0xc7, 0x0b, 0x00, 0x00,
+	// 1095 bytes of a gzipped FileDescriptorProto
+	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0xec, 0x96, 0xcd, 0x6e, 0x1b, 0x55,
+	0x14, 0x80, 0x3d, 0xf6, 0xf8, 0xef, 0x98, 0x26, 0xa3, 0x4b, 0x85, 0x46, 0x51, 0x19, 0xbb, 0x43,
+	0xa5, 0x1a, 0x84, 0x93, 0x26, 0x91, 0x28, 0x04, 0x21, 0xd4, 0x49, 0xd2, 0x24, 0x50, 0x11, 0xeb,
+	0xa6, 0x12, 0xa2, 0x9b, 0xd1, 0xd8, 0xbe, 0xd8, 0x13, 0x7b, 0x7c, 0x87, 0xf9, 0x71, 0xe5, 0x1d,
+	0x12, 0x2f, 0xc0, 0x63, 0xb0, 0xe6, 0x29, 0xba, 0xcc, 0xb2, 0x2b, 0x8b, 0x38, 0x1b, 0xd8, 0x55,
+	0x7e, 0x02, 0x74, 0x7f, 0xc6, 0x9e, 0xc4, 0x89, 0x84, 0x25, 0x36, 0x48, 0xac, 0x72, 0x7e, 0xbf,
+	0xeb, 0x7b, 0xee, 0x39, 0x27, 0x03, 0xd0, 0x73, 0x47, 0x64, 0xd3, 0x0f, 0x68, 0x44, 0x91, 0xca,
+	0xe4, 0x8d, 0x46, 0xd7, 0x8d, 0x7a, 0x71, 0x6b, 0xb3, 0x4d, 0xbd, 0xad, 0x2e, 0xed, 0xd2, 0x2d,
+	0xee, 0x6c, 0xc5, 0x3f, 0x72, 0x8d, 0x2b, 0x5c, 0x12, 0x49, 0x1b, 0xdb, 0xa9, 0xf0, 0x16, 0x19,
+	0xf6, 0x9d, 0x86, 0x47, 0xb6, 0xda, 0x64, 0x30, 0x68, 0xc4, 0x21, 0x09, 0x16, 0xc9, 0x4c, 0x13,
+	0x29, 0xe6, 0xef, 0x25, 0xc8, 0x59, 0x84, 0xa0, 0x43, 0x50, 0xbf, 0x73, 0x3c, 0xa2, 0x2b, 0x35,
+	0xa5, 0x5e, 0xb6, 0xb6, 0x67, 0x93, 0x6a, 0xa3, 0x15, 0xd2, 0xe1, 0x9e, 0x39, 0x74, 0x3c, 0xf2,
+	0x29, 0xf5, 0xdc, 0x88, 0x78, 0x7e, 0x34, 0x36, 0x6b, 0xe7, 0x73, 0xab, 0x59, 0x1b, 0x3b, 0xde,
+	0x40, 0xca, 0x98, 0xa7, 0xa3, 0x97, 0x50, 0x6c, 0xf6, 0xbb, 0x9c, 0x94, 0xe5, 0xa4, 0xbd, 0xd9,
+	0xa4, 0xfa, 0x99, 0x20, 0xf9, 0xc2, 0xb1, 0x0c, 0x93, 0x8e, 0x84, 0x97, 0xa8, 0x38, 0x41, 0x21,
+	0x0f, 0xde, 0x93, 0xe2, 0xbe, 0xe3, 0x91, 0x81, 0x9e, 0xe3, 0xe8, 0x93, 0xd9, 0xa4, 0x7a, 0x78,
+	0x0d, 0xcd, 0xbd, 0x77, 0xf2, 0xb9, 0xf7, 0xc6, 0x21, 0xc2, 0x86, 0xaf, 0xe1, 0x59, 0x2d, 0x30,
+	0xf1, 0xa9, 0xae, 0xde, 0xac, 0x45, 0x40, 0x7c, 0xba, 0x8c, 0x67, 0xd6, 0x04, 0xcb, 0x65, 0xcc,
+	0xd3, 0xd1, 0x29, 0x14, 0x9e, 0xc5, 0x51, 0x8f, 0x06, 0x7a, 0x9e, 0x83, 0x9e, 0xce, 0x26, 0xd5,
+	0x5d, 0x01, 0x72, 0xb8, 0x7d, 0x19, 0x25, 0xec, 0x09, 0x4c, 0x6a, 0x58, 0x62, 0x50, 0x0f, 0x2a,
+	0x42, 0x3a, 0xf4, 0x1c, 0x77, 0xa0, 0x17, 0x38, 0xf5, 0xf9, 0x6c, 0x52, 0xb5, 0xd2, 0x54, 0xee,
+	0xbc, 0x0b, 0xcd, 0x9d, 0xd7, 0xf9, 0xc2, 0x84, 0xd3, 0x68, 0xf4, 0x25, 0xa8, 0x4d, 0x1a, 0x44,
+	0x7a, 0xb1, 0xa6, 0xd4, 0xf3, 0xd6, 0xe3, 0xd9, 0xa4, 0xfa, 0x91, 0x2c, 0x34, 0x0d, 0xa2, 0x79,
+	0x59, 0xb9, 0x2c, 0xcb, 0xc9, 0x64, 0xcc, 0x93, 0xd8, 0xbd, 0x9b, 0x71, 0x6b, 0xe0, 0xb6, 0xf5,
+	0x52, 0x4d, 0xa9, 0x97, 0xd2, 0xf7, 0xf6, 0xb9, 0xfd, 0x96, 0x17, 0xe2, 0xf6, 0x39, 0x4c, 0x68,
+	0x58, 0x62, 0x58, 0x53, 0xbd, 0x70, 0xdb, 0x64, 0x18, 0x12, 0xbd, 0x7c, 0xb3, 0xa9, 0x06, 0xc2,
+	0xb1, 0x8c, 0x94, 0x8e, 0x84, 0x99, 0xa8, 0x38, 0x41, 0xb1, 0x6a, 0x1e, 0x90, 0xb0, 0x1d, 0xb8,
+	0x7e, 0xe4, 0xd2, 0xa1, 0x0e, 0x37, 0xab, 0xd9, 0x59, 0x38, 0x97, 0xe9, 0x29, 0x67, 0x72, 0x42,
+	0xda, 0x84, 0xd3, 0x68, 0xf4, 0x03, 0x94, 0xbe, 0x25, 0xe3, 0xd7, 0x34, 0xe8, 0x84, 0x7a, 0x85,
+	0x1f, 0xf3, 0xd5, 0x6c, 0x52, 0xfd, 0x42, 0x1c, 0xd3, 0x97, 0x9e, 0xe5, 0x33, 0x12, 0x4f, 0x72,
+	0xc0, 0x5c, 0xc7, 0x73, 0x1c, 0x7a, 0x0c, 0xc5, 0x03, 0x32, 0x7a, 0xe1, 0x0c, 0xbb, 0xfa, 0xbd,
+	0x9a, 0x52, 0x5f, 0xdb, 0xb9, 0xb7, 0xc9, 0x97, 0x88, 0x34, 0xe2, 0xc4, 0x8b, 0x1a, 0x50, 0x66,
+	0x7f, 0x63, 0xa7, 0x4b, 0x42, 0x7d, 0xad, 0xa6, 0xd4, 0x2b, 0x3b, 0xeb, 0x22, 0x74, 0x6e, 0xc6,
+	0x8b, 0x08, 0xf4, 0x00, 0xca, 0x27, 0xe1, 0x91, 0x13, 0x91, 0xd7, 0xce, 0x58, 0x5f, 0x67, 0xcf,
+	0x88, 0x17, 0x06, 0xf3, 0x10, 0x0a, 0x16, 0x21, 0x98, 0xfc, 0x84, 0x1e, 0x42, 0xfe, 0x25, 0xed,
+	0x93, 0x21, 0xdf, 0x1b, 0x95, 0x9d, 0xca, 0x26, 0x5f, 0x2d, 0xdc, 0x84, 0x85, 0x07, 0xe9, 0x50,
+	0xb4, 0x08, 0x59, 0xac, 0x04, 0x9c, 0xa8, 0xe6, 0xd7, 0x90, 0x3b, 0x20, 0x3e, 0x42, 0xb2, 0xd9,
+	0x18, 0x22, 0x2f, 0x7b, 0x48, 0x63, 0xae, 0x91, 0x4c, 0x60, 0x22, 0x8f, 0x0a, 0x68, 0x47, 0xcc,
+	0x3e, 0xe6, 0xb2, 0xf9, 0x97, 0x0a, 0xea, 0xb1, 0x3b, 0xfa, 0x7f, 0x7b, 0xfd, 0x17, 0xb6, 0xd7,
+	0xbf, 0xbe, 0x16, 0xea, 0xa0, 0x1e, 0x10, 0x3f, 0xd4, 0xcb, 0xb5, 0x5c, 0xbd, 0xb2, 0x73, 0x5f,
+	0x74, 0xf3, 0xb1, 0xe8, 0x7e, 0x3f, 0x3c, 0x1c, 0x46, 0xc1, 0x18, 0xf3, 0x88, 0x0d, 0x0b, 0xca,
+	0x73, 0x13, 0x6b, 0xad, 0x3e, 0x19, 0x8b, 0x56, 0xc1, 0x4c, 0x44, 0x55, 0xc8, 0x8f, 0x9c, 0x41,
+	0x2c, 0x1e, 0xbd, 0xb2, 0x53, 0x4e, 0x46, 0xc8, 0xc7, 0xc2, 0xbe, 0x97, 0xfd, 0x5c, 0x31, 0xbf,
+	0x4f, 0x0d, 0x10, 0xd2, 0x21, 0x7b, 0x44, 0x65, 0xcf, 0x97, 0x44, 0xf8, 0x11, 0xc5, 0xd9, 0x23,
+	0x8a, 0x9e, 0x00, 0x7c, 0xe3, 0x8c, 0x1c, 0x31, 0xfc, 0x12, 0xa8, 0x89, 0x88, 0x85, 0x1d, 0xa7,
+	0x62, 0xcc, 0x3e, 0xdc, 0x4b, 0xc0, 0x67, 0x24, 0x8a, 0x7d, 0xf4, 0x01, 0x14, 0x9e, 0xb5, 0x23,
+	0x77, 0x24, 0xda, 0xb9, 0x84, 0xa5, 0xc6, 0x26, 0x80, 0x3f, 0xac, 0x18, 0x0a, 0xf1, 0x4a, 0xf7,
+	0x21, 0xff, 0xdc, 0x1d, 0x90, 0x50, 0xcf, 0xd5, 0x72, 0xf5, 0x32, 0x16, 0x0a, 0x1b, 0xb9, 0xa4,
+	0x8f, 0x55, 0x31, 0x72, 0x52, 0x35, 0xb7, 0xd8, 0x0f, 0x47, 0x1f, 0x43, 0x9e, 0x1f, 0x25, 0x6f,
+	0xf0, 0xfe, 0xf5, 0x45, 0xc0, 0x5d, 0x58, 0x44, 0x98, 0x4f, 0xd3, 0xf7, 0x59, 0x25, 0x71, 0x17,
+	0x0a, 0xcd, 0x71, 0xd4, 0xa3, 0xc3, 0x55, 0x92, 0xb6, 0x41, 0x65, 0xa7, 0xad, 0x92, 0xf2, 0x04,
+	0x72, 0xfb, 0xcd, 0xe6, 0x8a, 0xbf, 0x6c, 0xff, 0xac, 0xe7, 0x04, 0xfe, 0x8a, 0x75, 0x38, 0x6d,
+	0x9d, 0x13, 0xfe, 0x12, 0xfb, 0x2b, 0x5e, 0x09, 0xc7, 0xad, 0xf1, 0x8a, 0x29, 0x07, 0x4e, 0x10,
+	0xad, 0x58, 0x85, 0xe6, 0xf1, 0x4a, 0x55, 0x38, 0x85, 0x62, 0x33, 0x0e, 0x7b, 0xec, 0xdb, 0xef,
+	0x21, 0xff, 0x04, 0x94, 0x39, 0xb2, 0xfb, 0x2d, 0x42, 0x2c, 0xf5, 0xcd, 0xa4, 0x9a, 0xc1, 0x39,
+	0x11, 0x22, 0xf7, 0x7c, 0xf6, 0xae, 0x3d, 0x6f, 0x9e, 0x41, 0x89, 0x01, 0xf9, 0x3e, 0x7e, 0x24,
+	0xf6, 0xb2, 0x44, 0xc2, 0x62, 0x34, 0x25, 0x53, 0x6c, 0xed, 0x7f, 0x00, 0x7d, 0x00, 0x20, 0x7f,
+	0x25, 0x26, 0x21, 0x5a, 0x83, 0xec, 0x49, 0x47, 0x4e, 0x6e, 0xf6, 0xa4, 0x63, 0x7e, 0x08, 0x95,
+	0xe4, 0xc8, 0x5b, 0xdc, 0x9f, 0xfc, 0xa2, 0xcc, 0xff, 0x3b, 0xa2, 0x22, 0xe4, 0xba, 0xd4, 0xd6,
+	0x32, 0x68, 0x1d, 0x2a, 0xe7, 0xf3, 0x86, 0xb6, 0x35, 0x05, 0x55, 0xa0, 0xe8, 0xf3, 0x46, 0xb5,
+	0xb5, 0x2c, 0x2a, 0x43, 0x9e, 0x79, 0x6d, 0x2d, 0x87, 0x4a, 0xa0, 0xb6, 0x7d, 0xdf, 0xd6, 0x54,
+	0x16, 0xd1, 0x0e, 0x59, 0xc3, 0xd8, 0x5a, 0x9e, 0xe5, 0xd3, 0xa4, 0x11, 0xda, 0xb6, 0x56, 0x60,
+	0x29, 0x41, 0xdc, 0x1a, 0xdb, 0x5a, 0x91, 0x89, 0x1d, 0x27, 0x88, 0x6c, 0xad, 0xc4, 0xb2, 0xfd,
+	0x9e, 0x6f, 0x6b, 0x65, 0xeb, 0xd5, 0xc5, 0xa5, 0x91, 0x79, 0x7b, 0x69, 0x64, 0xde, 0x5d, 0x1a,
+	0xca, 0xcf, 0x53, 0x43, 0xf9, 0x6d, 0x6a, 0x28, 0x6f, 0xa6, 0x86, 0x72, 0x31, 0x35, 0x94, 0x3f,
+	0xa6, 0x86, 0xf2, 0xe7, 0xd4, 0xc8, 0xbc, 0x9b, 0x1a, 0xca, 0xaf, 0x57, 0x46, 0xe6, 0xe2, 0xca,
+	0xc8, 0xbc, 0xbd, 0x32, 0x32, 0xaf, 0x1e, 0xdd, 0xf6, 0x29, 0xcf, 0xca, 0xb8, 0xd5, 0xa5, 0x0d,
+	0xbf, 0xdf, 0xe5, 0x72, 0xab, 0xc0, 0x3f, 0xe2, 0x77, 0xff, 0x0e, 0x00, 0x00, 0xff, 0xff, 0xfd,
+	0x54, 0xdb, 0xcc, 0x3a, 0x0c, 0x00, 0x00,
 }
 
 func (x DevLang) String() string {
@@ -1269,14 +1327,14 @@ func (this *Bee) Equal(that interface{}) bool {
 	}
 	return true
 }
-func (this *BeeName) Equal(that interface{}) bool {
+func (this *BeeReq) Equal(that interface{}) bool {
 	if that == nil {
 		return this == nil
 	}
 
-	that1, ok := that.(*BeeName)
+	that1, ok := that.(*BeeReq)
 	if !ok {
-		that2, ok := that.(BeeName)
+		that2, ok := that.(BeeReq)
 		if ok {
 			that1 = &that2
 		} else {
@@ -1288,10 +1346,40 @@ func (this *BeeName) Equal(that interface{}) bool {
 	} else if this == nil {
 		return false
 	}
-	if this.Author != that1.Author {
+	if !this.Token.Equal(that1.Token) {
 		return false
 	}
-	if this.Name != that1.Name {
+	if this.BeeName != that1.BeeName {
+		return false
+	}
+	return true
+}
+func (this *Dep) Equal(that interface{}) bool {
+	if that == nil {
+		return this == nil
+	}
+
+	that1, ok := that.(*Dep)
+	if !ok {
+		that2, ok := that.(Dep)
+		if ok {
+			that1 = &that2
+		} else {
+			return false
+		}
+	}
+	if that1 == nil {
+		return this == nil
+	} else if this == nil {
+		return false
+	}
+	if this.Port != that1.Port {
+		return false
+	}
+	if this.Dev != that1.Dev {
+		return false
+	}
+	if this.Prod != that1.Prod {
 		return false
 	}
 	return true
@@ -1340,9 +1428,6 @@ func (this *Hive) Equal(that interface{}) bool {
 		if !this.Deps[i].Equal(that1.Deps[i]) {
 			return false
 		}
-	}
-	if !this.Gateway.Equal(that1.Gateway) {
-		return false
 	}
 	return true
 }
@@ -1778,14 +1863,28 @@ func (this *Bee) GoString() string {
 	s = append(s, "}")
 	return strings.Join(s, "")
 }
-func (this *BeeName) GoString() string {
+func (this *BeeReq) GoString() string {
 	if this == nil {
 		return "nil"
 	}
 	s := make([]string, 0, 6)
-	s = append(s, "&hive.BeeName{")
-	s = append(s, "Author: "+fmt.Sprintf("%#v", this.Author)+",\n")
-	s = append(s, "Name: "+fmt.Sprintf("%#v", this.Name)+",\n")
+	s = append(s, "&hive.BeeReq{")
+	if this.Token != nil {
+		s = append(s, "Token: "+fmt.Sprintf("%#v", this.Token)+",\n")
+	}
+	s = append(s, "BeeName: "+fmt.Sprintf("%#v", this.BeeName)+",\n")
+	s = append(s, "}")
+	return strings.Join(s, "")
+}
+func (this *Dep) GoString() string {
+	if this == nil {
+		return "nil"
+	}
+	s := make([]string, 0, 7)
+	s = append(s, "&hive.Dep{")
+	s = append(s, "Port: "+fmt.Sprintf("%#v", this.Port)+",\n")
+	s = append(s, "Dev: "+fmt.Sprintf("%#v", this.Dev)+",\n")
+	s = append(s, "Prod: "+fmt.Sprintf("%#v", this.Prod)+",\n")
 	s = append(s, "}")
 	return strings.Join(s, "")
 }
@@ -1793,7 +1892,7 @@ func (this *Hive) GoString() string {
 	if this == nil {
 		return "nil"
 	}
-	s := make([]string, 0, 12)
+	s := make([]string, 0, 11)
 	s = append(s, "&hive.Hive{")
 	s = append(s, "Name: "+fmt.Sprintf("%#v", this.Name)+",\n")
 	s = append(s, "PkgName: "+fmt.Sprintf("%#v", this.PkgName)+",\n")
@@ -1801,11 +1900,18 @@ func (this *Hive) GoString() string {
 	s = append(s, "Repo: "+fmt.Sprintf("%#v", this.Repo)+",\n")
 	s = append(s, "Author: "+fmt.Sprintf("%#v", this.Author)+",\n")
 	s = append(s, "Public: "+fmt.Sprintf("%#v", this.Public)+",\n")
-	if this.Deps != nil {
-		s = append(s, "Deps: "+fmt.Sprintf("%#v", this.Deps)+",\n")
+	keysForDeps := make([]string, 0, len(this.Deps))
+	for k, _ := range this.Deps {
+		keysForDeps = append(keysForDeps, k)
 	}
-	if this.Gateway != nil {
-		s = append(s, "Gateway: "+fmt.Sprintf("%#v", this.Gateway)+",\n")
+	github_com_gogo_protobuf_sortkeys.Strings(keysForDeps)
+	mapStringForDeps := "map[string]*Dep{"
+	for _, k := range keysForDeps {
+		mapStringForDeps += fmt.Sprintf("%#v: %#v,", k, this.Deps[k])
+	}
+	mapStringForDeps += "}"
+	if this.Deps != nil {
+		s = append(s, "Deps: "+mapStringForDeps+",\n")
 	}
 	s = append(s, "}")
 	return strings.Join(s, "")
@@ -2140,7 +2246,7 @@ func (m *Bee) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	return len(dAtA) - i, nil
 }
 
-func (m *BeeName) Marshal() (dAtA []byte, err error) {
+func (m *BeeReq) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
 	n, err := m.MarshalToSizedBuffer(dAtA[:size])
@@ -2150,29 +2256,76 @@ func (m *BeeName) Marshal() (dAtA []byte, err error) {
 	return dAtA[:n], nil
 }
 
-func (m *BeeName) MarshalTo(dAtA []byte) (int, error) {
+func (m *BeeReq) MarshalTo(dAtA []byte) (int, error) {
 	size := m.Size()
 	return m.MarshalToSizedBuffer(dAtA[:size])
 }
 
-func (m *BeeName) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+func (m *BeeReq) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	i := len(dAtA)
 	_ = i
 	var l int
 	_ = l
-	if len(m.Name) > 0 {
-		i -= len(m.Name)
-		copy(dAtA[i:], m.Name)
-		i = encodeVarintHive(dAtA, i, uint64(len(m.Name)))
+	if len(m.BeeName) > 0 {
+		i -= len(m.BeeName)
+		copy(dAtA[i:], m.BeeName)
+		i = encodeVarintHive(dAtA, i, uint64(len(m.BeeName)))
 		i--
 		dAtA[i] = 0x12
 	}
-	if len(m.Author) > 0 {
-		i -= len(m.Author)
-		copy(dAtA[i:], m.Author)
-		i = encodeVarintHive(dAtA, i, uint64(len(m.Author)))
+	if m.Token != nil {
+		{
+			size, err := m.Token.MarshalToSizedBuffer(dAtA[:i])
+			if err != nil {
+				return 0, err
+			}
+			i -= size
+			i = encodeVarintHive(dAtA, i, uint64(size))
+		}
 		i--
 		dAtA[i] = 0xa
+	}
+	return len(dAtA) - i, nil
+}
+
+func (m *Dep) Marshal() (dAtA []byte, err error) {
+	size := m.Size()
+	dAtA = make([]byte, size)
+	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	if err != nil {
+		return nil, err
+	}
+	return dAtA[:n], nil
+}
+
+func (m *Dep) MarshalTo(dAtA []byte) (int, error) {
+	size := m.Size()
+	return m.MarshalToSizedBuffer(dAtA[:size])
+}
+
+func (m *Dep) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+	i := len(dAtA)
+	_ = i
+	var l int
+	_ = l
+	if len(m.Prod) > 0 {
+		i -= len(m.Prod)
+		copy(dAtA[i:], m.Prod)
+		i = encodeVarintHive(dAtA, i, uint64(len(m.Prod)))
+		i--
+		dAtA[i] = 0x1a
+	}
+	if len(m.Dev) > 0 {
+		i -= len(m.Dev)
+		copy(dAtA[i:], m.Dev)
+		i = encodeVarintHive(dAtA, i, uint64(len(m.Dev)))
+		i--
+		dAtA[i] = 0x12
+	}
+	if m.Port != 0 {
+		i = encodeVarintHive(dAtA, i, uint64(m.Port))
+		i--
+		dAtA[i] = 0x8
 	}
 	return len(dAtA) - i, nil
 }
@@ -2197,28 +2350,28 @@ func (m *Hive) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	_ = i
 	var l int
 	_ = l
-	if m.Gateway != nil {
-		{
-			size, err := m.Gateway.MarshalToSizedBuffer(dAtA[:i])
-			if err != nil {
-				return 0, err
-			}
-			i -= size
-			i = encodeVarintHive(dAtA, i, uint64(size))
-		}
-		i--
-		dAtA[i] = 0x52
-	}
 	if len(m.Deps) > 0 {
-		for iNdEx := len(m.Deps) - 1; iNdEx >= 0; iNdEx-- {
-			{
-				size, err := m.Deps[iNdEx].MarshalToSizedBuffer(dAtA[:i])
-				if err != nil {
-					return 0, err
+		for k := range m.Deps {
+			v := m.Deps[k]
+			baseI := i
+			if v != nil {
+				{
+					size, err := v.MarshalToSizedBuffer(dAtA[:i])
+					if err != nil {
+						return 0, err
+					}
+					i -= size
+					i = encodeVarintHive(dAtA, i, uint64(size))
 				}
-				i -= size
-				i = encodeVarintHive(dAtA, i, uint64(size))
+				i--
+				dAtA[i] = 0x12
 			}
+			i -= len(k)
+			copy(dAtA[i:], k)
+			i = encodeVarintHive(dAtA, i, uint64(len(k)))
+			i--
+			dAtA[i] = 0xa
+			i = encodeVarintHive(dAtA, i, uint64(baseI-i))
 			i--
 			dAtA[i] = 0x4a
 		}
@@ -2946,17 +3099,37 @@ func (m *Bee) Size() (n int) {
 	return n
 }
 
-func (m *BeeName) Size() (n int) {
+func (m *BeeReq) Size() (n int) {
 	if m == nil {
 		return 0
 	}
 	var l int
 	_ = l
-	l = len(m.Author)
+	if m.Token != nil {
+		l = m.Token.Size()
+		n += 1 + l + sovHive(uint64(l))
+	}
+	l = len(m.BeeName)
 	if l > 0 {
 		n += 1 + l + sovHive(uint64(l))
 	}
-	l = len(m.Name)
+	return n
+}
+
+func (m *Dep) Size() (n int) {
+	if m == nil {
+		return 0
+	}
+	var l int
+	_ = l
+	if m.Port != 0 {
+		n += 1 + sovHive(uint64(m.Port))
+	}
+	l = len(m.Dev)
+	if l > 0 {
+		n += 1 + l + sovHive(uint64(l))
+	}
+	l = len(m.Prod)
 	if l > 0 {
 		n += 1 + l + sovHive(uint64(l))
 	}
@@ -2993,14 +3166,17 @@ func (m *Hive) Size() (n int) {
 		n += 2
 	}
 	if len(m.Deps) > 0 {
-		for _, e := range m.Deps {
-			l = e.Size()
-			n += 1 + l + sovHive(uint64(l))
+		for k, v := range m.Deps {
+			_ = k
+			_ = v
+			l = 0
+			if v != nil {
+				l = v.Size()
+				l += 1 + sovHive(uint64(l))
+			}
+			mapEntrySize := 1 + len(k) + sovHive(uint64(len(k))) + l
+			n += mapEntrySize + 1 + sovHive(uint64(mapEntrySize))
 		}
-	}
-	if m.Gateway != nil {
-		l = m.Gateway.Size()
-		n += 1 + l + sovHive(uint64(l))
 	}
 	return n
 }
@@ -3263,13 +3439,25 @@ func (this *Bee) String() string {
 	}, "")
 	return s
 }
-func (this *BeeName) String() string {
+func (this *BeeReq) String() string {
 	if this == nil {
 		return "nil"
 	}
-	s := strings.Join([]string{`&BeeName{`,
-		`Author:` + fmt.Sprintf("%v", this.Author) + `,`,
-		`Name:` + fmt.Sprintf("%v", this.Name) + `,`,
+	s := strings.Join([]string{`&BeeReq{`,
+		`Token:` + strings.Replace(fmt.Sprintf("%v", this.Token), "Token", "user.Token", 1) + `,`,
+		`BeeName:` + fmt.Sprintf("%v", this.BeeName) + `,`,
+		`}`,
+	}, "")
+	return s
+}
+func (this *Dep) String() string {
+	if this == nil {
+		return "nil"
+	}
+	s := strings.Join([]string{`&Dep{`,
+		`Port:` + fmt.Sprintf("%v", this.Port) + `,`,
+		`Dev:` + fmt.Sprintf("%v", this.Dev) + `,`,
+		`Prod:` + fmt.Sprintf("%v", this.Prod) + `,`,
 		`}`,
 	}, "")
 	return s
@@ -3278,11 +3466,16 @@ func (this *Hive) String() string {
 	if this == nil {
 		return "nil"
 	}
-	repeatedStringForDeps := "[]*BeeName{"
-	for _, f := range this.Deps {
-		repeatedStringForDeps += strings.Replace(f.String(), "BeeName", "BeeName", 1) + ","
+	keysForDeps := make([]string, 0, len(this.Deps))
+	for k, _ := range this.Deps {
+		keysForDeps = append(keysForDeps, k)
 	}
-	repeatedStringForDeps += "}"
+	github_com_gogo_protobuf_sortkeys.Strings(keysForDeps)
+	mapStringForDeps := "map[string]*Dep{"
+	for _, k := range keysForDeps {
+		mapStringForDeps += fmt.Sprintf("%v: %v,", k, this.Deps[k])
+	}
+	mapStringForDeps += "}"
 	s := strings.Join([]string{`&Hive{`,
 		`Name:` + fmt.Sprintf("%v", this.Name) + `,`,
 		`PkgName:` + fmt.Sprintf("%v", this.PkgName) + `,`,
@@ -3290,8 +3483,7 @@ func (this *Hive) String() string {
 		`Repo:` + fmt.Sprintf("%v", this.Repo) + `,`,
 		`Author:` + fmt.Sprintf("%v", this.Author) + `,`,
 		`Public:` + fmt.Sprintf("%v", this.Public) + `,`,
-		`Deps:` + repeatedStringForDeps + `,`,
-		`Gateway:` + strings.Replace(this.Gateway.String(), "BeeName", "BeeName", 1) + `,`,
+		`Deps:` + mapStringForDeps + `,`,
 		`}`,
 	}, "")
 	return s
@@ -3925,7 +4117,7 @@ func (m *Bee) Unmarshal(dAtA []byte) error {
 	}
 	return nil
 }
-func (m *BeeName) Unmarshal(dAtA []byte) error {
+func (m *BeeReq) Unmarshal(dAtA []byte) error {
 	l := len(dAtA)
 	iNdEx := 0
 	for iNdEx < l {
@@ -3948,17 +4140,17 @@ func (m *BeeName) Unmarshal(dAtA []byte) error {
 		fieldNum := int32(wire >> 3)
 		wireType := int(wire & 0x7)
 		if wireType == 4 {
-			return fmt.Errorf("proto: BeeName: wiretype end group for non-group")
+			return fmt.Errorf("proto: BeeReq: wiretype end group for non-group")
 		}
 		if fieldNum <= 0 {
-			return fmt.Errorf("proto: BeeName: illegal tag %d (wire type %d)", fieldNum, wire)
+			return fmt.Errorf("proto: BeeReq: illegal tag %d (wire type %d)", fieldNum, wire)
 		}
 		switch fieldNum {
 		case 1:
 			if wireType != 2 {
-				return fmt.Errorf("proto: wrong wireType = %d for field Author", wireType)
+				return fmt.Errorf("proto: wrong wireType = %d for field Token", wireType)
 			}
-			var stringLen uint64
+			var msglen int
 			for shift := uint(0); ; shift += 7 {
 				if shift >= 64 {
 					return ErrIntOverflowHive
@@ -3968,27 +4160,31 @@ func (m *BeeName) Unmarshal(dAtA []byte) error {
 				}
 				b := dAtA[iNdEx]
 				iNdEx++
-				stringLen |= uint64(b&0x7F) << shift
+				msglen |= int(b&0x7F) << shift
 				if b < 0x80 {
 					break
 				}
 			}
-			intStringLen := int(stringLen)
-			if intStringLen < 0 {
+			if msglen < 0 {
 				return ErrInvalidLengthHive
 			}
-			postIndex := iNdEx + intStringLen
+			postIndex := iNdEx + msglen
 			if postIndex < 0 {
 				return ErrInvalidLengthHive
 			}
 			if postIndex > l {
 				return io.ErrUnexpectedEOF
 			}
-			m.Author = string(dAtA[iNdEx:postIndex])
+			if m.Token == nil {
+				m.Token = &user.Token{}
+			}
+			if err := m.Token.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
+				return err
+			}
 			iNdEx = postIndex
 		case 2:
 			if wireType != 2 {
-				return fmt.Errorf("proto: wrong wireType = %d for field Name", wireType)
+				return fmt.Errorf("proto: wrong wireType = %d for field BeeName", wireType)
 			}
 			var stringLen uint64
 			for shift := uint(0); ; shift += 7 {
@@ -4016,7 +4212,143 @@ func (m *BeeName) Unmarshal(dAtA []byte) error {
 			if postIndex > l {
 				return io.ErrUnexpectedEOF
 			}
-			m.Name = string(dAtA[iNdEx:postIndex])
+			m.BeeName = string(dAtA[iNdEx:postIndex])
+			iNdEx = postIndex
+		default:
+			iNdEx = preIndex
+			skippy, err := skipHive(dAtA[iNdEx:])
+			if err != nil {
+				return err
+			}
+			if skippy < 0 {
+				return ErrInvalidLengthHive
+			}
+			if (iNdEx + skippy) < 0 {
+				return ErrInvalidLengthHive
+			}
+			if (iNdEx + skippy) > l {
+				return io.ErrUnexpectedEOF
+			}
+			iNdEx += skippy
+		}
+	}
+
+	if iNdEx > l {
+		return io.ErrUnexpectedEOF
+	}
+	return nil
+}
+func (m *Dep) Unmarshal(dAtA []byte) error {
+	l := len(dAtA)
+	iNdEx := 0
+	for iNdEx < l {
+		preIndex := iNdEx
+		var wire uint64
+		for shift := uint(0); ; shift += 7 {
+			if shift >= 64 {
+				return ErrIntOverflowHive
+			}
+			if iNdEx >= l {
+				return io.ErrUnexpectedEOF
+			}
+			b := dAtA[iNdEx]
+			iNdEx++
+			wire |= uint64(b&0x7F) << shift
+			if b < 0x80 {
+				break
+			}
+		}
+		fieldNum := int32(wire >> 3)
+		wireType := int(wire & 0x7)
+		if wireType == 4 {
+			return fmt.Errorf("proto: Dep: wiretype end group for non-group")
+		}
+		if fieldNum <= 0 {
+			return fmt.Errorf("proto: Dep: illegal tag %d (wire type %d)", fieldNum, wire)
+		}
+		switch fieldNum {
+		case 1:
+			if wireType != 0 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Port", wireType)
+			}
+			m.Port = 0
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowHive
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				m.Port |= int32(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+		case 2:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Dev", wireType)
+			}
+			var stringLen uint64
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowHive
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				stringLen |= uint64(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			intStringLen := int(stringLen)
+			if intStringLen < 0 {
+				return ErrInvalidLengthHive
+			}
+			postIndex := iNdEx + intStringLen
+			if postIndex < 0 {
+				return ErrInvalidLengthHive
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.Dev = string(dAtA[iNdEx:postIndex])
+			iNdEx = postIndex
+		case 3:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Prod", wireType)
+			}
+			var stringLen uint64
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowHive
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				stringLen |= uint64(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			intStringLen := int(stringLen)
+			if intStringLen < 0 {
+				return ErrInvalidLengthHive
+			}
+			postIndex := iNdEx + intStringLen
+			if postIndex < 0 {
+				return ErrInvalidLengthHive
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.Prod = string(dAtA[iNdEx:postIndex])
 			iNdEx = postIndex
 		default:
 			iNdEx = preIndex
@@ -4280,46 +4612,105 @@ func (m *Hive) Unmarshal(dAtA []byte) error {
 			if postIndex > l {
 				return io.ErrUnexpectedEOF
 			}
-			m.Deps = append(m.Deps, &BeeName{})
-			if err := m.Deps[len(m.Deps)-1].Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
-				return err
+			if m.Deps == nil {
+				m.Deps = make(map[string]*Dep)
 			}
-			iNdEx = postIndex
-		case 10:
-			if wireType != 2 {
-				return fmt.Errorf("proto: wrong wireType = %d for field Gateway", wireType)
-			}
-			var msglen int
-			for shift := uint(0); ; shift += 7 {
-				if shift >= 64 {
-					return ErrIntOverflowHive
+			var mapkey string
+			var mapvalue *Dep
+			for iNdEx < postIndex {
+				entryPreIndex := iNdEx
+				var wire uint64
+				for shift := uint(0); ; shift += 7 {
+					if shift >= 64 {
+						return ErrIntOverflowHive
+					}
+					if iNdEx >= l {
+						return io.ErrUnexpectedEOF
+					}
+					b := dAtA[iNdEx]
+					iNdEx++
+					wire |= uint64(b&0x7F) << shift
+					if b < 0x80 {
+						break
+					}
 				}
-				if iNdEx >= l {
-					return io.ErrUnexpectedEOF
+				fieldNum := int32(wire >> 3)
+				if fieldNum == 1 {
+					var stringLenmapkey uint64
+					for shift := uint(0); ; shift += 7 {
+						if shift >= 64 {
+							return ErrIntOverflowHive
+						}
+						if iNdEx >= l {
+							return io.ErrUnexpectedEOF
+						}
+						b := dAtA[iNdEx]
+						iNdEx++
+						stringLenmapkey |= uint64(b&0x7F) << shift
+						if b < 0x80 {
+							break
+						}
+					}
+					intStringLenmapkey := int(stringLenmapkey)
+					if intStringLenmapkey < 0 {
+						return ErrInvalidLengthHive
+					}
+					postStringIndexmapkey := iNdEx + intStringLenmapkey
+					if postStringIndexmapkey < 0 {
+						return ErrInvalidLengthHive
+					}
+					if postStringIndexmapkey > l {
+						return io.ErrUnexpectedEOF
+					}
+					mapkey = string(dAtA[iNdEx:postStringIndexmapkey])
+					iNdEx = postStringIndexmapkey
+				} else if fieldNum == 2 {
+					var mapmsglen int
+					for shift := uint(0); ; shift += 7 {
+						if shift >= 64 {
+							return ErrIntOverflowHive
+						}
+						if iNdEx >= l {
+							return io.ErrUnexpectedEOF
+						}
+						b := dAtA[iNdEx]
+						iNdEx++
+						mapmsglen |= int(b&0x7F) << shift
+						if b < 0x80 {
+							break
+						}
+					}
+					if mapmsglen < 0 {
+						return ErrInvalidLengthHive
+					}
+					postmsgIndex := iNdEx + mapmsglen
+					if postmsgIndex < 0 {
+						return ErrInvalidLengthHive
+					}
+					if postmsgIndex > l {
+						return io.ErrUnexpectedEOF
+					}
+					mapvalue = &Dep{}
+					if err := mapvalue.Unmarshal(dAtA[iNdEx:postmsgIndex]); err != nil {
+						return err
+					}
+					iNdEx = postmsgIndex
+				} else {
+					iNdEx = entryPreIndex
+					skippy, err := skipHive(dAtA[iNdEx:])
+					if err != nil {
+						return err
+					}
+					if skippy < 0 {
+						return ErrInvalidLengthHive
+					}
+					if (iNdEx + skippy) > postIndex {
+						return io.ErrUnexpectedEOF
+					}
+					iNdEx += skippy
 				}
-				b := dAtA[iNdEx]
-				iNdEx++
-				msglen |= int(b&0x7F) << shift
-				if b < 0x80 {
-					break
-				}
 			}
-			if msglen < 0 {
-				return ErrInvalidLengthHive
-			}
-			postIndex := iNdEx + msglen
-			if postIndex < 0 {
-				return ErrInvalidLengthHive
-			}
-			if postIndex > l {
-				return io.ErrUnexpectedEOF
-			}
-			if m.Gateway == nil {
-				m.Gateway = &BeeName{}
-			}
-			if err := m.Gateway.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
-				return err
-			}
+			m.Deps[mapkey] = mapvalue
 			iNdEx = postIndex
 		default:
 			iNdEx = preIndex

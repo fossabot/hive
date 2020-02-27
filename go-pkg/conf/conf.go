@@ -1,8 +1,8 @@
 package conf
 
 import (
-	"errors"
 	"fmt"
+	"github.com/benka-me/cell-user/go-pkg/user"
 	"gopkg.in/yaml.v2"
 	"io/ioutil"
 	"log"
@@ -30,12 +30,22 @@ func Hives(fn func (s string)) {
 	}
 }
 
+func GetUsername() string {
+	c := ParseYaml()
+	return c.Username
+}
+
+func UserToken() *user.Token {
+	c := ParseYaml()
+	return &user.Token{Val:c.Token}
+}
+
 func Token() string {
-	c := Parse()
+	c := ParseYaml()
 	return c.Token
 }
 
-func (c *Conf) Write() error {
+func (c *Conf) SaveYaml() error {
 	b, err := yaml.Marshal(c)
 	if err != nil {
 		return err
@@ -44,7 +54,7 @@ func (c *Conf) Write() error {
 	return ioutil.WriteFile(file, b, 0644)
 }
 
-func Parse() Conf {
+func ParseYaml() Conf {
 	c := Conf{}
 	yamlFile, err := ioutil.ReadFile(file)
 	if err != nil {
@@ -60,20 +70,8 @@ func Parse() Conf {
 	return c
 }
 
-func (c *Conf) Parse() error {
-	if c == nil {
-		c = &Conf{}
-	}
-	yamlFile, err := ioutil.ReadFile(file)
-	if err != nil {
-		return errors.New("cannot parse or write file on " + file)
-	}
-
-	err = yaml.Unmarshal(yamlFile, c)
-	if err != nil {
-		return err
-	}
-
+func (c *Conf) ParseYaml() error {
+	ParseYaml()
 	return nil
 }
 

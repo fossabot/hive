@@ -42,7 +42,7 @@ func RunLogin(c *cli.Context) error {
 		Username: res.Data.Username,
 		Token: res.Auth,
 	}
-	err = cnf.Write()
+	err = cnf.SaveYaml()
 	if err != nil {
 		return err
 	}
@@ -52,7 +52,7 @@ func RunLogin(c *cli.Context) error {
 
 func RunWhoAmI(c *cli.Context) error {
 	cnf := conf.Conf{}
-	err := cnf.Parse()
+	err := cnf.ParseYaml()
 	if err != nil {
 		return err
 	}
@@ -78,7 +78,7 @@ func RunWhoAmI(c *cli.Context) error {
 		st := status.Convert(err)
 		if st.Code() == jwt.TokenExpired {
 			cnf.Token = ""
-			err := cnf.Write()
+			err := cnf.SaveYaml()
 			if err != nil {
 				log.Println(err)
 			}

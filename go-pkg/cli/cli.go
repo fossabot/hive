@@ -21,7 +21,6 @@ var gopath = os.Getenv("GOPATH")
 var HivePath = fmt.Sprintf("%s/hive", os.Getenv("HOME"))
 
 func Run()  {
-	fmt.Println("====== run")
 	if _, err := os.Stat(HivePath); os.IsNotExist(err) {
 		_ = os.Mkdir(HivePath, 0777) //TODO permission
 	}
@@ -60,6 +59,11 @@ func Run()  {
 					Usage:  "init hive application",
 				},
 			},
+		},
+		{
+			Name:                   "push",
+			Action: publish.Push,
+			Usage:                  "push on hive-bees.com",
 		},
 		{
 			Name:                   "publish",

@@ -34,6 +34,8 @@ message Bee {
     DevLang DevLang = 13;
     Languages Languages = 14;
     bool IsGateway = 15;
+    repeated string Deps = 16;
+    repeated string Cons = 17;
 }
 
 message Bees {

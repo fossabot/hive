@@ -53,6 +53,16 @@ export class Bee extends jspb.Message {
   getIsgateway(): boolean;
   setIsgateway(value: boolean): void;
 
+  clearDepsList(): void;
+  getDepsList(): Array<string>;
+  setDepsList(value: Array<string>): void;
+  addDeps(value: string, index?: number): string;
+
+  clearConsList(): void;
+  getConsList(): Array<string>;
+  setConsList(value: Array<string>): void;
+  addCons(value: string, index?: number): string;
+
   serializeBinary(): Uint8Array;
   toObject(includeInstance?: boolean): Bee.AsObject;
   static toObject(includeInstance: boolean, msg: Bee): Bee.AsObject;
@@ -80,6 +90,8 @@ export namespace Bee {
     devlang: DevLangMap[keyof DevLangMap],
     languages?: Languages.AsObject,
     isgateway: boolean,
+    depsList: Array<string>,
+    consList: Array<string>,
   }
 }
 

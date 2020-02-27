@@ -9,6 +9,7 @@ public: false
 license: ""
 description: ""
 keywords: ""
+tag: ""
 devlang: 0
 languages:
   go:
@@ -28,3 +29,4 @@ languages:
       - rpc-hive.proto
       pkgname: hive
 isgateway: false
+deps: []

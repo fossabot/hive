@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"gopkg.in/yaml.v2"
 	"io/ioutil"
+	"log"
 	"os"
 )
 
@@ -16,6 +17,18 @@ type Conf struct {
 
 
 var file = fmt.Sprintf("%s/.hive_conf.yaml", os.Getenv("HOME"))
+var HivePath = fmt.Sprintf("%s/hive", os.Getenv("HOME"))
+
+func Hives(fn func (s string)) {
+	dirs, err := ioutil.ReadDir(HivePath)
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	for _, f := range dirs {
+		fn(f.Name())
+	}
+}
 
 func Token() string {
 	c := Parse()
@@ -35,12 +48,12 @@ func Parse() Conf {
 	c := Conf{}
 	yamlFile, err := ioutil.ReadFile(file)
 	if err != nil {
-		fmt.Println(err)
+		fmt.Println("parse " + file, err)
 		os.Exit(1)
 	}
 	err = yaml.Unmarshal(yamlFile, &c)
 	if err != nil {
-		fmt.Println(err)
+		fmt.Println("unmarshall " + file, err)
 		os.Exit(1)
 	}
 

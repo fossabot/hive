@@ -50,7 +50,7 @@ goog.exportSymbol('proto.hive.Ruby', null, global);
  * @constructor
  */
 proto.hive.Bee = function(opt_data) {
-  jspb.Message.initialize(this, opt_data, 0, -1, null, null);
+  jspb.Message.initialize(this, opt_data, 0, -1, proto.hive.Bee.repeatedFields_, null);
 };
 goog.inherits(proto.hive.Bee, jspb.Message);
 if (goog.DEBUG && !COMPILED) {
@@ -502,6 +502,13 @@ if (goog.DEBUG && !COMPILED) {
   proto.hive.PushHiveRes.displayName = 'proto.hive.PushHiveRes';
 }
 
+/**
+ * List of repeated fields within this message type.
+ * @private {!Array<number>}
+ * @const
+ */
+proto.hive.Bee.repeatedFields_ = [16,17];
+
 
 
 if (jspb.Message.GENERATE_TO_OBJECT) {
@@ -547,7 +554,9 @@ proto.hive.Bee.toObject = function(includeInstance, msg) {
     tag: jspb.Message.getFieldWithDefault(msg, 12, ""),
     devlang: jspb.Message.getFieldWithDefault(msg, 13, 0),
     languages: (f = msg.getLanguages()) && proto.hive.Languages.toObject(includeInstance, f),
-    isgateway: jspb.Message.getBooleanFieldWithDefault(msg, 15, false)
+    isgateway: jspb.Message.getBooleanFieldWithDefault(msg, 15, false),
+    depsList: (f = jspb.Message.getRepeatedField(msg, 16)) == null ? undefined : f,
+    consList: (f = jspb.Message.getRepeatedField(msg, 17)) == null ? undefined : f
   };
 
   if (includeInstance) {
@@ -644,6 +653,14 @@ proto.hive.Bee.deserializeBinaryFromReader = function(msg, reader) {
     case 15:
       var value = /** @type {boolean} */ (reader.readBool());
       msg.setIsgateway(value);
+      break;
+    case 16:
+      var value = /** @type {string} */ (reader.readString());
+      msg.addDeps(value);
+      break;
+    case 17:
+      var value = /** @type {string} */ (reader.readString());
+      msg.addCons(value);
       break;
     default:
       reader.skipField();
@@ -777,6 +794,20 @@ proto.hive.Bee.serializeBinaryToWriter = function(message, writer) {
   if (f) {
     writer.writeBool(
       15,
+      f
+    );
+  }
+  f = message.getDepsList();
+  if (f.length > 0) {
+    writer.writeRepeatedString(
+      16,
+      f
+    );
+  }
+  f = message.getConsList();
+  if (f.length > 0) {
+    writer.writeRepeatedString(
+      17,
       f
     );
   }
@@ -1069,6 +1100,80 @@ proto.hive.Bee.prototype.getIsgateway = function() {
  */
 proto.hive.Bee.prototype.setIsgateway = function(value) {
   return jspb.Message.setProto3BooleanField(this, 15, value);
+};
+
+
+/**
+ * repeated string Deps = 16;
+ * @return {!Array<string>}
+ */
+proto.hive.Bee.prototype.getDepsList = function() {
+  return /** @type {!Array<string>} */ (jspb.Message.getRepeatedField(this, 16));
+};
+
+
+/**
+ * @param {!Array<string>} value
+ * @return {!proto.hive.Bee} returns this
+ */
+proto.hive.Bee.prototype.setDepsList = function(value) {
+  return jspb.Message.setField(this, 16, value || []);
+};
+
+
+/**
+ * @param {string} value
+ * @param {number=} opt_index
+ * @return {!proto.hive.Bee} returns this
+ */
+proto.hive.Bee.prototype.addDeps = function(value, opt_index) {
+  return jspb.Message.addToRepeatedField(this, 16, value, opt_index);
+};
+
+
+/**
+ * Clears the list making it empty but non-null.
+ * @return {!proto.hive.Bee} returns this
+ */
+proto.hive.Bee.prototype.clearDepsList = function() {
+  return this.setDepsList([]);
+};
+
+
+/**
+ * repeated string Cons = 17;
+ * @return {!Array<string>}
+ */
+proto.hive.Bee.prototype.getConsList = function() {
+  return /** @type {!Array<string>} */ (jspb.Message.getRepeatedField(this, 17));
+};
+
+
+/**
+ * @param {!Array<string>} value
+ * @return {!proto.hive.Bee} returns this
+ */
+proto.hive.Bee.prototype.setConsList = function(value) {
+  return jspb.Message.setField(this, 17, value || []);
+};
+
+
+/**
+ * @param {string} value
+ * @param {number=} opt_index
+ * @return {!proto.hive.Bee} returns this
+ */
+proto.hive.Bee.prototype.addCons = function(value, opt_index) {
+  return jspb.Message.addToRepeatedField(this, 17, value, opt_index);
+};
+
+
+/**
+ * Clears the list making it empty but non-null.
+ * @return {!proto.hive.Bee} returns this
+ */
+proto.hive.Bee.prototype.clearConsList = function() {
+  return this.setConsList([]);
 };
 
 

@@ -79,7 +79,7 @@ func InitBeeAskUser() *Bee {
 	return bee
 }
 
-func Getbee() (Bee, error) {
+func GetYamlBeeLocal() (Bee, error) {
 	bee := Bee{}
 	dat, err := ioutil.ReadFile("./bee.yaml")
 

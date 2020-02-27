@@ -59,10 +59,6 @@ func (g Go) PublicFiles (bee *Bee) error {
 	if err != nil {
 		return err
 	}
-	err = os.MkdirAll(fmt.Sprintf("%s/cmd", repoPath), perm)
-	if err != nil {
-		return err
-	}
 
 	//generate defs.proto file
 	err = generator.Code{
@@ -91,7 +87,7 @@ func (g Go) PublicFiles (bee *Bee) error {
 	main := generator.Code{
 		Interface: bee,
 		Template:  fmt.Sprintf("%s/src/github.com/benka-me/hive/go-pkg/generator/template/go/maingo", gopath),
-		Target:    fmt.Sprintf("%s/src/%s/cmd/main.go", gopath, repo),
+		Target:    fmt.Sprintf("%s/src/%s/main.go", gopath, repo),
 		Name:      "main",
 	}
 	err = main.Generate()

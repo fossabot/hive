@@ -18,8 +18,8 @@ func Run(c *cli.Context) error {
 		return err
 	}
 
-	b, errBee := hive.Getbee()
-	h, errHive := hive.GetHive()
+	b, errBee := hive.GetYamlBeeLocal()
+	h, errHive := hive.GetYamlHiveLocal()
 
 	if errBee == nil && errHive != nil {
 		_, err = core.PublishBee(context.Background(), &hive.PushBee{

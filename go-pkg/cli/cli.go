@@ -2,6 +2,7 @@ package cli
 
 import (
 	"errors"
+	"fmt"
 	"github.com/benka-me/hive/go-pkg/cli/initier"
 	"github.com/benka-me/hive/go-pkg/cli/install"
 	"github.com/benka-me/hive/go-pkg/cli/list"
@@ -17,8 +18,13 @@ import (
 )
 
 var gopath = os.Getenv("GOPATH")
+var HivePath = fmt.Sprintf("%s/hive", os.Getenv("HOME"))
 
 func Run()  {
+	fmt.Println("====== run")
+	if _, err := os.Stat(HivePath); os.IsNotExist(err) {
+		_ = os.Mkdir(HivePath, 0777) //TODO permission
+	}
 	app := cli.NewApp()
 	app.Name = "Hive"
 	app.Usage = "Manage your microservices based application"
@@ -84,7 +90,7 @@ func Run()  {
 			Name:    "protoc",
 			Aliases: []string{"proto", "gnr"},
 			Action: func(c *cli.Context) error {
-				bee, err := hive.Getbee()
+				bee, err := hive.GetYamlBeeLocal()
 				if err != nil {
 					return errors.New("no bee.yaml file founded")
 				}

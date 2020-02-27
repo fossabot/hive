@@ -12,16 +12,33 @@ import (
 
 var gopath = os.Getenv("GOPATH")
 
-func GetHiveMust() Hive {
-	h, err := GetHive()
-	if err != nil {
-		fmt.Println("hive.yaml not found ", err)
-		os.Exit(1)
-	}
-	return h
-}
+var HivePath = fmt.Sprintf("%s/hive", os.Getenv("HOME"))
 
-func GetHive() (Hive, error) {
+//func GetHiveMust() Hive {
+//	h, err := GetYamlHiveLocal()
+//	if err != nil {
+//		fmt.Println("===> hive.yaml not found ", err)
+//		os.Exit(1)
+//	}
+//	return h
+//}
+//
+func GetHivePath(name string) (Hive, error) {
+	hive := Hive{}
+	dat, err := ioutil.ReadFile(fmt.Sprintf("%s/%s/hive.yaml", HivePath, name))
+
+	if err != nil {
+		return hive, err
+	}
+
+	err = yaml.Unmarshal(dat, &hive)
+	if err != nil {
+		return hive, err
+	}
+
+	return hive, nil
+}
+func GetYamlHiveLocal() (Hive, error) {
 	hive := Hive{}
 	dat, err := ioutil.ReadFile("./hive.yaml")
 
@@ -42,8 +59,11 @@ func (hive *Hive) SaveYaml() error {
 	if err != nil {
 		return err
 	}
+	if _, err := os.Stat(HivePath); os.IsNotExist(err) {
+		_ = os.Mkdir(HivePath + "/" + hive.Name, 0777) //TODO permission
+	}
 
-	path := fmt.Sprintf("%s/src/%s/hive.yaml", gopath, hive.Repo)
+	path := fmt.Sprintf("%s/%s/hive.yaml", HivePath, hive.Name)
 	err = ioutil.WriteFile(path, data, 0644)
 	if err != nil {
 		return err

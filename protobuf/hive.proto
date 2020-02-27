@@ -18,6 +18,12 @@ enum DevLang {
     php_ = 9;
 }
 
+message Version {
+    int32 Major = 1;
+    int32 Minor = 2;
+    int32 Mod = 3;
+}
+
 message Bee {
     string Name = 1 [(gogoproto.moretags) = "bson:\"name,omitempty\" json:\"name\" yaml:\"name\""];
     string PkgName = 2 [(gogoproto.moretags) = "bson:\"pkgName,omitempty\" json:\"pkgName\" yaml:\"pkgName\""];
@@ -36,6 +42,7 @@ message Bee {
     bool IsGateway = 15;
     repeated string Deps = 16;
     repeated string Cons = 17;
+    Version Version = 18;
 }
 
 message Bees {

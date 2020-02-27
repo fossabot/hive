@@ -30,3 +30,4 @@ languages:
       pkgname: hive
 isgateway: false
 deps: []
+cons: []

@@ -5,6 +5,34 @@ import * as jspb from "google-protobuf";
 import * as github_com_gogo_protobuf_gogoproto_gogo_pb from "../../../../github.com/gogo/protobuf/gogoproto/gogo_pb";
 import * as github_com_benka_me_cell_user_protobuf_user_pb from "../../../../github.com/benka-me/cell-user/protobuf/user_pb";
 
+export class Version extends jspb.Message {
+  getMajor(): number;
+  setMajor(value: number): void;
+
+  getMinor(): number;
+  setMinor(value: number): void;
+
+  getMod(): number;
+  setMod(value: number): void;
+
+  serializeBinary(): Uint8Array;
+  toObject(includeInstance?: boolean): Version.AsObject;
+  static toObject(includeInstance: boolean, msg: Version): Version.AsObject;
+  static extensions: {[key: number]: jspb.ExtensionFieldInfo<jspb.Message>};
+  static extensionsBinary: {[key: number]: jspb.ExtensionFieldBinaryInfo<jspb.Message>};
+  static serializeBinaryToWriter(message: Version, writer: jspb.BinaryWriter): void;
+  static deserializeBinary(bytes: Uint8Array): Version;
+  static deserializeBinaryFromReader(message: Version, reader: jspb.BinaryReader): Version;
+}
+
+export namespace Version {
+  export type AsObject = {
+    major: number,
+    minor: number,
+    mod: number,
+  }
+}
+
 export class Bee extends jspb.Message {
   getName(): string;
   setName(value: string): void;
@@ -63,6 +91,11 @@ export class Bee extends jspb.Message {
   setConsList(value: Array<string>): void;
   addCons(value: string, index?: number): string;
 
+  hasVersion(): boolean;
+  clearVersion(): void;
+  getVersion(): Version | undefined;
+  setVersion(value?: Version): void;
+
   serializeBinary(): Uint8Array;
   toObject(includeInstance?: boolean): Bee.AsObject;
   static toObject(includeInstance: boolean, msg: Bee): Bee.AsObject;
@@ -92,6 +125,7 @@ export namespace Bee {
     isgateway: boolean,
     depsList: Array<string>,
     consList: Array<string>,
+    version?: Version.AsObject,
   }
 }
 

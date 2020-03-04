@@ -33,7 +33,7 @@ func TestGo_GenerateServer(t *testing.T) {
 				Setup: tt.Setup,
 			}
 			if err := g.GenerateServer(tt.bee); (err != nil) != tt.wantErr {
-				t.Errorf("ClientsFiles() error = %v, wantErr %v", err, tt.wantErr)
+				t.Errorf("ClientsFile() error = %v, wantErr %v", err, tt.wantErr)
 			}
 		})
 	}

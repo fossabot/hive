@@ -1,16 +1,13 @@
 package generator
 
 import (
-	"bytes"
 	"fmt"
 	"github.com/benka-me/hive/go-pkg/hive"
-	"os"
-	"os/exec"
 )
 
 type Go hive.Go
 
-func (g Go) ClientsFiles(bee *hive.Bee) error {
+func (g Go) ClientsFile(bee *hive.Bee) error {
 	repo := bee.Repo
 	repoPath := fmt.Sprintf("%s/src/%s", gopath, repo)
 
@@ -27,47 +24,9 @@ func (g Go) ClientsFiles(bee *hive.Bee) error {
 	return nil
 }
 
-func (g Go) EntryPointFiles(bee *hive.Bee) error {
+func (g Go) ServerFiles(bee *hive.Bee) error {
 	repo := bee.Repo
-	pkgName := bee.PkgName
 	repoPath := fmt.Sprintf("%s/src/%s", gopath, repo)
-	var perm os.FileMode = 0777 //TODO change file mode
-
-	//create directories
-	err := os.MkdirAll(fmt.Sprintf("%s/go-pkg/http/rpc", repoPath), perm)
-	if err != nil {return err}
-
-	err = os.MkdirAll(fmt.Sprintf("%s/go-pkg/rpc-%s", repoPath, pkgName), perm)
-	if err != nil {return err}
-
-	err = os.MkdirAll(fmt.Sprintf("%s/go-pkg/%s", repoPath, pkgName), perm)
-	if err != nil {return err}
-
-	err = os.MkdirAll(fmt.Sprintf("%s/protobuf", repoPath), perm)
-	if err != nil {return err}
-
-	//generate defs.proto file
-	err = Code{
-		Interface: bee,
-		Template:  fmt.Sprintf("%s/defs.proto", ProtobufTemplates),
-		Target:    fmt.Sprintf("%s/src/%s/protobuf/%s.proto", gopath, repo, pkgName),
-		Name:      "defs",
-	}.Generate()
-	if err != nil {
-		return err
-	}
-
-	//generate rpc.proto file
-	rpc := Code{
-		Interface: bee,
-		Template:  fmt.Sprintf("%s/rpc.proto", ProtobufTemplates),
-		Target:    fmt.Sprintf("%s/src/%s/protobuf/rpc-%s.proto", gopath,repo, pkgName),
-		Name:      "rpc",
-	}
-	err = rpc.Generate()
-	if err != nil {
-		return err
-	}
 
 	//generate main.go
 	main := Code{
@@ -76,7 +35,7 @@ func (g Go) EntryPointFiles(bee *hive.Bee) error {
 		Target:    fmt.Sprintf("%s/src/%s/main.go", gopath, repo),
 		Name:      "main",
 	}
-	err = main.Generate()
+	err := main.Generate()
 	if err != nil {
 		return err
 	}
@@ -108,42 +67,18 @@ func (g Go) EntryPointFiles(bee *hive.Bee) error {
 }
 
 func (g Go) Protoc(bee *hive.Bee) {
-	//repoPath := fmt.Sprintf("%s/src/%s", gopath, bee.Repo)
-	//args := make([]string, 5)
-	//args = []string{
-	//	"-I=.",
-	//	fmt.Sprintf("-I=%s/src/", gopath),
-	//	fmt.Sprintf("-I=%s/src/github.com/gogo/protobuf/protobuf", gopath),
-	//	fmt.Sprintf("-I=%s/src/%s/protobuf", gopath, bee.Repo),
-	//	fmt.Sprintf("--%s_out=plugins=grpc:%s/src", "gogoslick",  gopath),
-	//}
-	//
-	for _, f := range bee.ProtoSetup.Files {
-		//args = append(args, fmt.Sprintf("%s/protobuf/%s", repoPath, f))
-		g.oneProtoc(f, bee.Repo)
-	}
-	//runProtocCommand(args)
-}
-
-func (g Go) oneProtoc (file, repo string) { //TODO delete this
-	args := []string{
-		"-I=.",
-		fmt.Sprintf("-I=%s/src/", gopath),
+	repoPath := fmt.Sprintf("%s/src/%s", gopath, bee.Repo)
+	goOut := fmt.Sprintf("./go-pkg/%s", bee.PkgName)
+	args := make([]string, 5)
+	args = []string{
+		fmt.Sprintf("-I=%s/protobuf", repoPath),
 		fmt.Sprintf("-I=%s/src/github.com/gogo/protobuf/protobuf", gopath),
-		fmt.Sprintf("-I=%s/src/%s/protobuf", gopath, repo),
-		fmt.Sprintf("--%s_out=plugins=grpc:%s/src", "gogoslick",  gopath),
-		file,
+		fmt.Sprintf("-I=%s/src/%s/protobuf", gopath, bee.Repo),
+		fmt.Sprintf("--%s_out=plugins=grpc:%s", g.Setup.ProtocBinary,  goOut),
 	}
-	cmd := exec.Command("protoc", args...)
-	var out bytes.Buffer
-	var errs bytes.Buffer
-	cmd.Stdout = &out
-	cmd.Stderr= &errs
-	fmt.Println(cmd.Args)
-	err := cmd.Run()
-	if err != nil {
-		fmt.Println(errs.String())
-	}
-	fmt.Printf("%s\n", out.String())
-}
 
+	for _, f := range bee.ProtoSetup.Files {
+		args = append(args, fmt.Sprintf("%s/protobuf/%s", repoPath, f))
+	}
+	runProtocCommand(args)
+}

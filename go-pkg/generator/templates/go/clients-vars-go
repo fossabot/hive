@@ -1,2 +1,2 @@
-    {{.PkgNameCamel}} rpc_{{.PkgName}}.{{.PkgNameCamel}}Client
-    {{.PkgNameCamel}}Gateway rpc_{{.PkgName}}.{{.PkgNameCamel}}Client
+    {{.PkgNameCamel}} {{.PkgName}}.{{.PkgNameCamel}}Client
+    {{.PkgNameCamel}}Gateway {{.PkgName}}.{{.PkgNameCamel}}Client

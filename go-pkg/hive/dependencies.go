@@ -1,5 +1,7 @@
 package hive
 
+import "github.com/benka-me/hive/go-pkg/git"
+
 func (dep Namespace) ConcatConsumer(cons Namespace) {
 	dep.GetLocalHive()
 }
@@ -61,6 +63,7 @@ func (h *Hive) ConcatConsumerToLocalBee(b *Bee) {
 
 func (cons *Hive) ConcatDependencyFromNamespace(namespace Namespace) {
 	bee := GetLocalBeeFromStringNamespace(namespace)
+	_, _ = git.Clone(bee.Repo)
 	cons.ConcatDependencyFromBee(bee)
 }
 

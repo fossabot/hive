@@ -1,8 +1,6 @@
 syntax="proto3";
 package {{.PkgName}};
 
-option go_package = "{{.Repo}}/go-pkg/{{.PkgName}}";
-
 message Request {
     string Msg = 1;
 }

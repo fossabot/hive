@@ -9,7 +9,7 @@ import (
 )
 
 func Protoc (bee hive.Bee) {
-	lgs, err := ToPkgsGenerators(bee.Languages)
+	lgs, err := GetLangs(bee.Languages)
 	_if.ErrorExit("protoc to pkgs generators", err)
 
 	for _, lg := range *lgs {

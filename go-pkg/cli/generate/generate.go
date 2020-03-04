@@ -13,7 +13,7 @@ func GenerateEntryPointFiles(c *cli.Context) error {
 	_if.ErrorExit("generate entry point files", err)
 
 
-	generator.GenerateEntryPointFiles(&bee)
+	generator.GenerateAll(&bee)
 	return nil
 }
 
@@ -31,7 +31,7 @@ func All(c *cli.Context) error {
 	bee, err := hive.GetLocalBeeCurrentDir()
 	_if.ErrorExit("generate all", err)
 
-	generator.GenerateEntryPointFiles(&bee)
+	generator.GenerateAll(&bee)
 	generator.GenerateClientsFilesFor(&bee)
 	return nil
 }

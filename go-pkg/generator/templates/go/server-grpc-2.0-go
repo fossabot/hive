@@ -3,7 +3,7 @@ package rpc
 //this is your entry point server, it will not be generated again.
 import (
 	"fmt"
-	rpc_{{.PkgName}} "{{.Repo}}/go-pkg/rpc-{{.PkgName}}"
+	{{.PkgName}} "{{.Repo}}/go-pkg/{{.PkgName}}"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/reflection"
 	"github.com/benka-me/hive/go-pkg/engine"
@@ -17,11 +17,11 @@ type App struct {
 }
 
 // your server port, don't change it unless you update the service on the hub.
-const port = ":{{.Port}}"
 
 var grpcServer *grpc.Server
 
 func Server_2_0(rcf engine.RunConfig) {
+    var port = rcf.ThisPort("{{.Author}}/{{.Name}}")
 	var err error
 	app := &App{
 	    Clients : initClients(rcf, grpc.WithInsecure()), // Init clients of dependencies services
@@ -34,7 +34,7 @@ func Server_2_0(rcf engine.RunConfig) {
 		log.Fatalf("failed to listen: %v", err)
 	}
 	{
-		rpc_{{.PkgName}}.Register{{.PkgNameCamel}}Server(grpcServer, app) // Register your service server.
+		{{.PkgName}}.Register{{.PkgNameCamel}}Server(grpcServer, app) // Register your service server.
 		reflection.Register(grpcServer)
 	}
 

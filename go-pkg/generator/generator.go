@@ -27,26 +27,29 @@ var Templates = fmt.Sprintf("%s/src/github.com/benka-me/hive/go-pkg/generator/te
 var GoTemplates = fmt.Sprintf("%s/go", Templates)
 var ProtobufTemplates = fmt.Sprintf("%s/protobuf", Templates)
 
-func GenerateEntryPointFiles(bee *hive.Bee) {
+func GenerateAll(bee *hive.Bee) {
 	bee.FillDefaultMeta()
+	err := agnosticFiles(bee)
+	_if.ErrorExit("generate all, agnostic files", err)
 
-	generators, err := ToPkgsGenerators(bee.Languages)
-	_if.ErrorExit("generate entry points files", err)
-
-	for _, gen := range *generators {
-		err := gen.EntryPointFiles(bee)
-		_if.ErrorExit("generate entry points files", err)
-	}
+	generators, err := GetLangs(bee.Languages)
+	_if.ErrorExit("generate all, to lang generator", err)
 
 	for _, lang := range *generators {
 		lang.Protoc(bee)
 	}
+
+	err = GetDevLang(bee).ServerFiles(bee)
+	_if.ErrorExit("generate all entry points files", err)
+
+	err = GetDevLang(bee).ClientsFile(bee)
+	_if.ErrorExit("generate clients file", err)
 }
 
 func GenerateClientsFilesFor(bee *hive.Bee) {
 	bee.FillDefaultMeta()
 
-	err := ServerLang(bee).ClientsFiles(bee)
+	err := GetDevLang(bee).ClientsFile(bee)
 	_if.ErrorExit("generate clients files", err)
 }
 

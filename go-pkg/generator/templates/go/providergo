@@ -1,4 +1,4 @@
-package rpc_{{.PkgName}}
+package {{.PkgName}}
 
 import (
     "google.golang.org/grpc"

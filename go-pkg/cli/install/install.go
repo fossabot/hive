@@ -4,6 +4,7 @@ import (
 	"errors"
 	_if "github.com/benka-me/hive/go-pkg/cli/if"
 	"github.com/benka-me/hive/go-pkg/generator"
+	"github.com/benka-me/hive/go-pkg/git"
 	"github.com/benka-me/hive/go-pkg/hive"
 	"github.com/benka-me/hive/go-pkg/hive/dive"
 	"github.com/benka-me/hive/go-pkg/request"
@@ -12,8 +13,9 @@ import (
 )
 
 func RunInstall(c *cli.Context) error {
+	var depMode = false
 	if len(os.Args) < 3 {
-		return errors.New("bad argument")
+		depMode = true
 	}
 	urls := hive.ArrayToNamespaces(os.Args[2:])
 
@@ -21,15 +23,17 @@ func RunInstall(c *cli.Context) error {
 	h, errHive := hive.GetLocalHiveCurrentDir()
 
 	if errBee == nil && errHive != nil {
-		err := installBee(b, urls)
-		if err != nil {
-			return err
+		if depMode {
+			urls = b.GetSubDependencies()
 		}
+		err := installFromBee(b, urls)
+		if err != nil {return err}
 	} else if errBee != nil && errHive == nil {
-		err := installHive(h, urls)
-		if err != nil {
-			return err
+		if depMode {
+			urls = h.GetDependencies()
 		}
+		err := installFromHive(h, urls)
+		if err != nil {return err}
 	} else if errBee != nil && errHive != nil {
 		return errors.New("no hive.yaml or bee.yaml detected")
 	} else if errBee == nil && errHive == nil {
@@ -38,7 +42,7 @@ func RunInstall(c *cli.Context) error {
 	return nil
 }
 
-func installHive (target hive.Hive, requiredNamespaces hive.Namespaces) error {
+func installFromHive(target hive.Hive, requiredNamespaces hive.Namespaces) error {
 	if target.Deps == nil {
 		target.Deps = make(map[string]*hive.Dep)
 	}
@@ -50,12 +54,13 @@ func installHive (target hive.Hive, requiredNamespaces hive.Namespaces) error {
 
 	for _, dep := range allDependencies {
 		target.ConcatDependencyFromBee(dep)
+		_, _ = git.Clone(dep.Repo)
 	}
 
 	return target.SaveLocal()
 }
 
-func installBee(target hive.Bee, requiredNamespaces hive.Namespaces) error {
+func installFromBee(target hive.Bee, requiredNamespaces hive.Namespaces) error {
 	required, err := request.GetRemoteBees(requiredNamespaces)
 	_if.ErrorExit("get remote bees", err)
 

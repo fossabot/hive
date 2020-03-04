@@ -13,7 +13,7 @@ var gopath = os.Getenv("GOPATH")
 func Bee(c *cli.Context) error {
 	bee := hive.InitBeeAskUser()
 
-	generator.GenerateEntryPointFiles(bee)
+	generator.GenerateAll(bee)
 
 	conf.AddBee(bee.GetNamespaceStr(), bee.Repo)
 	err := bee.SaveLocal()

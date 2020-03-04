@@ -8,10 +8,10 @@ import (
 
 type Python hive.Python
 
-func (py Python) ClientsFiles(bee *hive.Bee) error {
+func (py Python) ClientsFile(bee *hive.Bee) error {
 	return nil
 }
-func (py Python) EntryPointFiles(bee *hive.Bee) error {
+func (py Python) ServerFiles(bee *hive.Bee) error {
 	return nil
 }
 

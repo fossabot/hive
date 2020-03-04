@@ -35,8 +35,8 @@ func TestGo_GenerateServer(t *testing.T) {
 			g := Go{
 				Setup: tt.Setup,
 			}
-			if err := g.ClientsFiles(tt.bee); (err != nil) != tt.wantErr {
-				t.Errorf("ClientsFiles() error = %v, wantErr %v", err, tt.wantErr)
+			if err := g.ClientsFile(tt.bee); (err != nil) != tt.wantErr {
+				t.Errorf("ClientsFile() error = %v, wantErr %v", err, tt.wantErr)
 			}
 		})
 	}

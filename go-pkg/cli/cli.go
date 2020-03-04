@@ -3,12 +3,14 @@ package cli
 import (
 	"errors"
 	"fmt"
+	"github.com/benka-me/hive/go-pkg/cli/generate"
 	"github.com/benka-me/hive/go-pkg/cli/initier"
 	"github.com/benka-me/hive/go-pkg/cli/install"
 	"github.com/benka-me/hive/go-pkg/cli/list"
 	"github.com/benka-me/hive/go-pkg/cli/privatish"
 	"github.com/benka-me/hive/go-pkg/cli/publish"
 	"github.com/benka-me/hive/go-pkg/cli/remove"
+	"github.com/benka-me/hive/go-pkg/generator"
 	"github.com/benka-me/hive/go-pkg/hive"
 	"github.com/benka-me/hive/go-pkg/user"
 	"github.com/urfave/cli"
@@ -66,6 +68,18 @@ func Run()  {
 			Usage:                  "push on hive-bees.com",
 		},
 		{
+			Name:                   "generate",
+			Usage:                  "generate files",
+			Action: generate.GenerateClientsFiles,
+			Subcommands: cli.Commands{
+				{
+					Name:   "all",
+					Action: generate.All,
+					Usage:  "generate server entry point",
+				},
+			},
+		},
+		{
 			Name:                   "publish",
 			Action: publish.Run,
 			Usage:                  "publish on hive-and-bees.com",
@@ -94,11 +108,11 @@ func Run()  {
 			Name:    "protoc",
 			Aliases: []string{"proto", "gnr"},
 			Action: func(c *cli.Context) error {
-				bee, err := hive.GetYamlBeeLocal()
+				bee, err := hive.GetLocalBeeCurrentDir()
 				if err != nil {
 					return errors.New("no bee.yaml file founded")
 				}
-				bee.Protoc()
+				generator.Protoc(bee)
 				return nil
 			},
 			Usage:   "generate protobuf files",

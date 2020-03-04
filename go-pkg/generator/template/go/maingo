@@ -1,9 +1,0 @@
-package main
-
-import (
-	"{{.Repo}}/go-pkg/http/rpc"
-)
-
-func main () {
-	rpc.Server_2_0()
-}

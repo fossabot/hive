@@ -14,19 +14,14 @@ var gopath = os.Getenv("GOPATH")
 
 var HivePath = fmt.Sprintf("%s/hive", os.Getenv("HOME"))
 
-//func GetHiveMust() Hive {
-//	h, err := GetYamlHiveLocal()
-//	if err != nil {
-//		fmt.Println("===> hive.yaml not found ", err)
-//		os.Exit(1)
-//	}
-//	return h
-//}
-//
-func GetHivePath(name string) (Hive, error) {
-	hive := Hive{}
-	dat, err := ioutil.ReadFile(fmt.Sprintf("%s/%s/hive.yaml", HivePath, name))
+//func (h *Hive) Dep
 
+type Hives []*Hive
+
+func GetLocalHiveFromString(namespace string) (Hive, error) {
+	author, name := Explode(namespace)
+	hive := Hive{}
+	dat, err := ioutil.ReadFile(fmt.Sprintf("%s/%s/%s/hive.yaml", HivePath, author, name))
 	if err != nil {
 		return hive, err
 	}
@@ -38,7 +33,8 @@ func GetHivePath(name string) (Hive, error) {
 
 	return hive, nil
 }
-func GetYamlHiveLocal() (Hive, error) {
+
+func GetLocalHiveCurrentDir() (Hive, error) {
 	hive := Hive{}
 	dat, err := ioutil.ReadFile("./hive.yaml")
 
@@ -54,16 +50,18 @@ func GetYamlHiveLocal() (Hive, error) {
 	return hive, nil
 }
 
-func (hive *Hive) SaveYaml() error {
+func (hive *Hive) SaveLocal() error {
 	data, err := yaml.Marshal(hive)
 	if err != nil {
 		return err
 	}
-	if _, err := os.Stat(HivePath); os.IsNotExist(err) {
-		_ = os.Mkdir(HivePath + "/" + hive.Name, 0777) //TODO permission
+
+	err = os.MkdirAll(fmt.Sprintf("%s/%s/%s", HivePath, hive.Author, hive.Name), 0777) //TODO perm
+	if err != nil {
+		return err
 	}
 
-	path := fmt.Sprintf("%s/%s/hive.yaml", HivePath, hive.Name)
+	path := fmt.Sprintf("%s/%s/%s/hive.yaml", HivePath, hive.Author, hive.Name)
 	err = ioutil.WriteFile(path, data, 0644)
 	if err != nil {
 		return err
@@ -81,17 +79,6 @@ func InitHiveAskUser() *Hive {
 		"required,lte=20,gte=3",
 		scan.IsAlphanumDash))
 
-	hive.PkgName = strings.ToLower(scan.Step(
-		"Package name (2 - 7 chars long, shorter is better) for packages and types building",
-		"required,lte=7,gte=2",
-		scan.IsAlphaNum))
-
-	hive.Repo = strings.Replace(scan.Step(
-		"Git repository",
-		"required,gte=5",
-		func(s string) error {return nil}), " ", "", -1)
-
-	//portValidator := portValidator(hive.Public)
 	hive.FillMeta()
 
 	return hive

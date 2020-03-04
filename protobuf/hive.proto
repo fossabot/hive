@@ -2,7 +2,6 @@ syntax="proto3";
 package hive;
 
 option go_package = "github.com/benka-me/hive/go-pkg/hive";
-import "github.com/gogo/protobuf/gogoproto/gogo.proto";
 import "github.com/benka-me/cell-user/protobuf/user.proto";
 
 enum DevLang {
@@ -18,31 +17,24 @@ enum DevLang {
     php_ = 9;
 }
 
-message Version {
-    int32 Major = 1;
-    int32 Minor = 2;
-    int32 Mod = 3;
-}
-
 message Bee {
-    string Name = 1 [(gogoproto.moretags) = "bson:\"name,omitempty\" json:\"name\" yaml:\"name\""];
-    string PkgName = 2 [(gogoproto.moretags) = "bson:\"pkgName,omitempty\" json:\"pkgName\" yaml:\"pkgName\""];
-    string PkgNameCamel = 3 [(gogoproto.moretags) = "bson:\"pkgNameCamel,omitempty\" json:\"pkgNameCamel\" yaml:\"pkgNameCamel\""];
-    string Repo = 4 [(gogoproto.moretags) = "bson:\"repo,omitempty\" json:\"repo\" yaml:\"repo\""];
-    string Author = 5 [(gogoproto.moretags) = "bson:\"author,omitempty\" json:\"author\" yaml:\"author\""];
-    string AuthorEmail = 6 [(gogoproto.moretags) = "bson:\"authorEmail,omitempty\" json:\"authorEmail\" yaml:\"authorEmail\""];
-    int32 Port = 7 [(gogoproto.moretags) = "bson:\"port\" json:\"port\" yaml:\"port\""];
-    bool Public = 8 [(gogoproto.moretags) = "bson:\"public,omitempty\" json:\"public\" yaml:\"public\""];
-    string License = 9 [(gogoproto.moretags) = "bson:\"license,omitempty\" json:\"license\" yaml:\"license\""];
-    string Description = 10 [(gogoproto.moretags) = "bson:\"description,omitempty\" json:\"description\" yaml:\"description\""];
-    string Keywords = 11 [(gogoproto.moretags) = "bson:\"keywords,omitempty\" json:\"keywords\" yaml:\"keywords\""];
+    string Name = 1;
+    string PkgName = 2;
+    string PkgNameCamel = 3;
+    string Repo = 4;
+    string Author = 5;
+    int32 Port = 7;
+    bool Public = 8;
+    string License = 9;
+    string Description = 10;
+    string Keywords = 11;
     string Tag = 12;
     DevLang DevLang = 13;
     Languages Languages = 14;
-    bool IsGateway = 15;
-    repeated string Deps = 16;
-    repeated string Cons = 17;
-    Version Version = 18;
+    ProtoSetup ProtoSetup = 15;
+    bool IsGateway = 16;
+    repeated string Deps = 17;
+    repeated string Cons = 18;
 }
 
 message Bees {
@@ -64,31 +56,37 @@ message Dep {
     int32 Port = 1;
     string Dev = 2;
     string Prod = 3;
+    string PkgName = 4;
+    string PkgNameCamel = 5;
 }
 
 message Hive {
-    string Name = 1 [(gogoproto.moretags) = "bson:\"name,omitempty\" json:\"name\" yaml:\"name\""];
-    string PkgName = 2 [(gogoproto.moretags) = "bson:\"pkgName,omitempty\" json:\"pkgName\" yaml:\"pkgName\""];
-    string PkgNameCamel = 3 [(gogoproto.moretags) = "bson:\"pkgNameCamel,omitempty\" json:\"pkgNameCamel\" yaml:\"pkgNameCamel\""];
-    string Repo = 4 [(gogoproto.moretags) = "bson:\"repo,omitempty\" json:\"repo\" yaml:\"repo\""];
-    string Author = 5 [(gogoproto.moretags) = "bson:\"author,omitempty\" json:\"author\" yaml:\"author\""];
-    bool Public = 8 [(gogoproto.moretags) = "bson:\"public,omitempty\" json:\"public\" yaml:\"public\""];
-    map<string, Dep> Deps = 9 [(gogoproto.nullable) = false];
+    string Name = 1;
+    string PkgName = 2;
+    string PkgNameCamel = 3;
+    string Repo = 4;
+    string Author = 5;
+    bool Public = 8;
+    map<string, Dep> Deps = 9;
 }
 
 message Languages {
     Go Go = 1;
     Javascript Javascript = 2;
+
+}
+
+message ProtoSetup {
+    repeated string Files = 3;
 }
 
 message LanguageSetup {
     bool Active = 1;
-    string Repo = 2;
-    repeated string Files = 3;
-    string PkgName = 4;
+    string ProtocBinary = 3;
 }
 
-message Go {LanguageSetup Setup = 1;}
+message Go {
+    LanguageSetup Setup = 1;}
 message Javascript {LanguageSetup Setup = 1;}
 message Python {LanguageSetup Setup = 1;}
 message Java {LanguageSetup Setup = 1;}
@@ -100,12 +98,12 @@ message Dart {LanguageSetup Setup = 1;}
 message PHP {LanguageSetup Setup = 1;}
 
 message PushBee {
-    Bee Bee = 1 [(gogoproto.nullable) = false];
+    Bee Bee = 1;
     user.Token Token = 2;
 }
 
 message PushHive {
-    Hive Hive = 1 [(gogoproto.nullable) = false];
+    Hive Hive = 1;
     user.Token Token = 2;
 }
 

@@ -1,13 +1,12 @@
-name: hive
-pkgName: hive
-pkgNameCamel: Hive
+name: hive-cli
+pkgname: hive
+pkgnamecamel: Hive
 repo: github.com/benka-me/hive
-author: ""
-authorEmail: ""
-port: 8012
-public: false
-license: ""
-description: ""
+author: benka-me
+port: 0
+public: true
+license: "agpl"
+description: "Hive cli is a drone of the 'HiveOfServices' ecosystem"
 keywords: ""
 tag: ""
 devlang: 0
@@ -15,19 +14,14 @@ languages:
   go:
     setup:
       active: true
-      repo: github.com/benka-me/hive
-      files:
-      - hive.proto
-      - rpc-hive.proto
-      pkgname: hive
+      protocbinary: gogoslick
   javascript:
     setup:
       active: true
-      repo: github.com/benka-me/hive
-      files:
-      - hive.proto
-      - rpc-hive.proto
-      pkgname: hive
+      protocbinary: ""
+protosetup:
+  files:
+  - hive.proto
 isgateway: false
 deps: []
 cons: []

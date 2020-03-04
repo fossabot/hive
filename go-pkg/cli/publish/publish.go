@@ -18,18 +18,18 @@ func Push(c *cli.Context) error {
 		return err
 	}
 
-	b, errBee := hive.GetYamlBeeLocal()
-	h, errHive := hive.GetYamlHiveLocal()
+	b, errBee := hive.GetLocalBeeCurrentDir()
+	h, errHive := hive.GetLocalHiveCurrentDir()
 
 	if errBee == nil && errHive != nil {
 		_, err = core.SetBee(context.Background(), &hive.PushBee{
-			Bee:b,
+			Bee:&b,
 			Token: &user.Token{Val:conf.ParseYaml().Token},
 		})
 	} else if errBee != nil && errHive == nil {
 		panic("implement push hive")
 		_, err = core.PublishHive(context.Background(), &hive.PushHive{
-			Hive:h,
+			Hive:&h,
 			Token: &user.Token{Val:conf.ParseYaml().Token},
 		})
 	} else if errBee != nil && errHive != nil {
@@ -51,28 +51,28 @@ func Run(c *cli.Context) error {
 		return err
 	}
 
-	b, errBee := hive.GetYamlBeeLocal()
-	h, errHive := hive.GetYamlHiveLocal()
+	b, errBee := hive.GetLocalBeeCurrentDir()
+	h, errHive := hive.GetLocalHiveCurrentDir()
 
 	if errBee == nil && errHive != nil {
 		_, err = core.PublishBee(context.Background(), &hive.PushBee{
-			Bee:b,
+			Bee:&b,
 			Token: &user.Token{Val:conf.ParseYaml().Token},
 		})
 		if err == nil {
 			b.Author = conf.GetUsername()
 			b.Public = true
-			_ = b.SaveYaml()
+			_ = b.SaveLocal()
 		}
 	} else if errBee != nil && errHive == nil {
 		_, err = core.PublishHive(context.Background(), &hive.PushHive{
-			Hive:h,
+			Hive:&h,
 			Token: &user.Token{Val:conf.ParseYaml().Token},
 		})
 		if err == nil {
 			h.Author = conf.GetUsername()
 			h.Public = true
-			_ = h.SaveYaml()
+			_ = h.SaveLocal()
 		}
 	} else if errBee != nil && errHive != nil {
 		return errors.New("no hive.yaml or bee.yaml detected")

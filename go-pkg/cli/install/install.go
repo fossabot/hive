@@ -2,28 +2,23 @@ package install
 
 import (
 	"errors"
-	"fmt"
+	_if "github.com/benka-me/hive/go-pkg/cli/if"
+	"github.com/benka-me/hive/go-pkg/generator"
 	"github.com/benka-me/hive/go-pkg/hive"
+	"github.com/benka-me/hive/go-pkg/hive/dive"
 	"github.com/benka-me/hive/go-pkg/request"
 	"github.com/urfave/cli"
 	"os"
 )
 
-func ifErrorExit (err error) {
-	if err != nil {
-		fmt.Println(err)
-		os.Exit(1)
-	}
-}
-
 func RunInstall(c *cli.Context) error {
 	if len(os.Args) < 3 {
 		return errors.New("bad argument")
 	}
-	urls := hive.ArrToURLs(os.Args[2:])
+	urls := hive.ArrayToNamespaces(os.Args[2:])
 
-	b, errBee := hive.GetYamlBeeLocal()
-	h, errHive := hive.GetYamlHiveLocal()
+	b, errBee := hive.GetLocalBeeCurrentDir()
+	h, errHive := hive.GetLocalHiveCurrentDir()
 
 	if errBee == nil && errHive != nil {
 		err := installBee(b, urls)
@@ -43,42 +38,41 @@ func RunInstall(c *cli.Context) error {
 	return nil
 }
 
-func installHive (target hive.Hive, urls hive.URLs) error {
-	return nil
-}
-
-
-func dive(self hive.URL) hive.URLs {
-	ret := make(hive.URLs, 0)
-	bee, err := request.GetBee(self)
-	ifErrorExit(err)
-	for _, urlSub := range bee.DepURLs() {
-		urlsSub := dive(urlSub)
-		//TODO check cycle(if urlSub contains himself -> self)
-		ret = hive.AppendURL(ret, urlsSub...)
-	}
-	ret = hive.AppendURL(ret, self)
-	return ret
-}
-
-func installBee(target hive.Bee, urls hive.URLs) error {
-	bees, err := request.GetBees(urls)
-	ifErrorExit(err)
-
-	_ = target.ConcatDeps(bees).SaveYaml()
-
-	deps := make(hive.URLs, 0)
-	deps = hive.AppendURL(deps, urls...)
-
-	fmt.Println(deps)
-	allDeps := make(hive.URLs, 0)
-	for _, d := range deps {
-		subs := dive(d)
-		allDeps = hive.AppendURL(allDeps, subs...)
+func installHive (target hive.Hive, requiredNamespaces hive.Namespaces) error {
+	if target.Deps == nil {
+		target.Deps = make(map[string]*hive.Dep)
 	}
 
-	fmt.Println(allDeps)
+	allDependenciesNamespace := dive.GetSubDependenciesNamespaces(requiredNamespaces)
 
-	return nil
+	allDependencies, err := request.GetRemoteBees(allDependenciesNamespace)
+	_if.ErrorExit("get remote bees", err)
+
+	for _, dep := range allDependencies {
+		target.ConcatDependencyFromBee(dep)
+	}
+
+	return target.SaveLocal()
 }
 
+func installBee(target hive.Bee, requiredNamespaces hive.Namespaces) error {
+	required, err := request.GetRemoteBees(requiredNamespaces)
+	_if.ErrorExit("get remote bees", err)
+
+	_ = target.ConcatSubDependenciesFrom(required).SaveLocal()
+	generator.GenerateClientsFilesFor(&target)
+
+	allDependenciesNamespace := dive.GetSubDependenciesNamespaces(requiredNamespaces)
+
+	for _, consumerNamespace := range target.Cons {
+		consumer, err := hive.GetLocalHiveFromString(consumerNamespace)
+		if err != nil {
+			return err
+		}
+		for _, depNamespace := range allDependenciesNamespace {
+			consumer.ConcatDependencyFromNamespace(depNamespace)
+		}
+		consumer.SaveLocal()
+	}
+	return nil
+}

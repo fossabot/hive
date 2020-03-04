@@ -8,7 +8,7 @@ import (
 	"google.golang.org/grpc"
 )
 
-func GetBees(urls hive.URLs) ([]*hive.Bee, error) {
+func GetRemoteBees(urls hive.Namespaces) ([]*hive.Bee, error) {
 	core, err := rpc_core.ConnectThroughApi("localhost", grpc.WithInsecure())
 	if err != nil {
 		return []*hive.Bee{}, err
@@ -18,10 +18,13 @@ func GetBees(urls hive.URLs) ([]*hive.Bee, error) {
 		Token:    conf.UserToken(),
 		BeeNames: urls.Array(),
 	})
+	if res == nil {
+		return []*hive.Bee{}, err
+	}
 	return res.Bees, err
 }
 
-func GetBee(url hive.URL) (*hive.Bee, error) {
+func GetRemoteBee(url hive.Namespace) (*hive.Bee, error) {
 	core, err := rpc_core.ConnectThroughApi("localhost", grpc.WithInsecure())
 	if err != nil {
 		return &hive.Bee{}, err
@@ -29,7 +32,7 @@ func GetBee(url hive.URL) (*hive.Bee, error) {
 
 	res, err := core.GetBee(context.Background(), &hive.BeeReq{
 		Token:    conf.UserToken(),
-		BeeName: url.Str(),
+		BeeName: url.NamespaceStr(),
 	})
 	return res, err
 }

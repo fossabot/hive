@@ -1,0 +1,2 @@
+    {{.PkgNameCamel}} rpc_{{.PkgName}}.{{.PkgNameCamel}}Client
+    {{.PkgNameCamel}}Gateway rpc_{{.PkgName}}.{{.PkgNameCamel}}Client

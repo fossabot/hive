@@ -2,36 +2,7 @@
 // file: github.com/benka-me/hive/protobuf/hive.proto
 
 import * as jspb from "google-protobuf";
-import * as github_com_gogo_protobuf_gogoproto_gogo_pb from "../../../../github.com/gogo/protobuf/gogoproto/gogo_pb";
 import * as github_com_benka_me_cell_user_protobuf_user_pb from "../../../../github.com/benka-me/cell-user/protobuf/user_pb";
-
-export class Version extends jspb.Message {
-  getMajor(): number;
-  setMajor(value: number): void;
-
-  getMinor(): number;
-  setMinor(value: number): void;
-
-  getMod(): number;
-  setMod(value: number): void;
-
-  serializeBinary(): Uint8Array;
-  toObject(includeInstance?: boolean): Version.AsObject;
-  static toObject(includeInstance: boolean, msg: Version): Version.AsObject;
-  static extensions: {[key: number]: jspb.ExtensionFieldInfo<jspb.Message>};
-  static extensionsBinary: {[key: number]: jspb.ExtensionFieldBinaryInfo<jspb.Message>};
-  static serializeBinaryToWriter(message: Version, writer: jspb.BinaryWriter): void;
-  static deserializeBinary(bytes: Uint8Array): Version;
-  static deserializeBinaryFromReader(message: Version, reader: jspb.BinaryReader): Version;
-}
-
-export namespace Version {
-  export type AsObject = {
-    major: number,
-    minor: number,
-    mod: number,
-  }
-}
 
 export class Bee extends jspb.Message {
   getName(): string;
@@ -48,9 +19,6 @@ export class Bee extends jspb.Message {
 
   getAuthor(): string;
   setAuthor(value: string): void;
-
-  getAuthoremail(): string;
-  setAuthoremail(value: string): void;
 
   getPort(): number;
   setPort(value: number): void;
@@ -78,6 +46,11 @@ export class Bee extends jspb.Message {
   getLanguages(): Languages | undefined;
   setLanguages(value?: Languages): void;
 
+  hasProtosetup(): boolean;
+  clearProtosetup(): void;
+  getProtosetup(): ProtoSetup | undefined;
+  setProtosetup(value?: ProtoSetup): void;
+
   getIsgateway(): boolean;
   setIsgateway(value: boolean): void;
 
@@ -90,11 +63,6 @@ export class Bee extends jspb.Message {
   getConsList(): Array<string>;
   setConsList(value: Array<string>): void;
   addCons(value: string, index?: number): string;
-
-  hasVersion(): boolean;
-  clearVersion(): void;
-  getVersion(): Version | undefined;
-  setVersion(value?: Version): void;
 
   serializeBinary(): Uint8Array;
   toObject(includeInstance?: boolean): Bee.AsObject;
@@ -113,7 +81,6 @@ export namespace Bee {
     pkgnamecamel: string,
     repo: string,
     author: string,
-    authoremail: string,
     port: number,
     pb_public: boolean,
     license: string,
@@ -122,10 +89,10 @@ export namespace Bee {
     tag: string,
     devlang: DevLangMap[keyof DevLangMap],
     languages?: Languages.AsObject,
+    protosetup?: ProtoSetup.AsObject,
     isgateway: boolean,
     depsList: Array<string>,
     consList: Array<string>,
-    version?: Version.AsObject,
   }
 }
 
@@ -219,6 +186,12 @@ export class Dep extends jspb.Message {
   getProd(): string;
   setProd(value: string): void;
 
+  getPkgname(): string;
+  setPkgname(value: string): void;
+
+  getPkgnamecamel(): string;
+  setPkgnamecamel(value: string): void;
+
   serializeBinary(): Uint8Array;
   toObject(includeInstance?: boolean): Dep.AsObject;
   static toObject(includeInstance: boolean, msg: Dep): Dep.AsObject;
@@ -234,6 +207,8 @@ export namespace Dep {
     port: number,
     dev: string,
     prod: string,
+    pkgname: string,
+    pkgnamecamel: string,
   }
 }
 
@@ -308,20 +283,34 @@ export namespace Languages {
   }
 }
 
-export class LanguageSetup extends jspb.Message {
-  getActive(): boolean;
-  setActive(value: boolean): void;
-
-  getRepo(): string;
-  setRepo(value: string): void;
-
+export class ProtoSetup extends jspb.Message {
   clearFilesList(): void;
   getFilesList(): Array<string>;
   setFilesList(value: Array<string>): void;
   addFiles(value: string, index?: number): string;
 
-  getPkgname(): string;
-  setPkgname(value: string): void;
+  serializeBinary(): Uint8Array;
+  toObject(includeInstance?: boolean): ProtoSetup.AsObject;
+  static toObject(includeInstance: boolean, msg: ProtoSetup): ProtoSetup.AsObject;
+  static extensions: {[key: number]: jspb.ExtensionFieldInfo<jspb.Message>};
+  static extensionsBinary: {[key: number]: jspb.ExtensionFieldBinaryInfo<jspb.Message>};
+  static serializeBinaryToWriter(message: ProtoSetup, writer: jspb.BinaryWriter): void;
+  static deserializeBinary(bytes: Uint8Array): ProtoSetup;
+  static deserializeBinaryFromReader(message: ProtoSetup, reader: jspb.BinaryReader): ProtoSetup;
+}
+
+export namespace ProtoSetup {
+  export type AsObject = {
+    filesList: Array<string>,
+  }
+}
+
+export class LanguageSetup extends jspb.Message {
+  getActive(): boolean;
+  setActive(value: boolean): void;
+
+  getProtocbinary(): string;
+  setProtocbinary(value: string): void;
 
   serializeBinary(): Uint8Array;
   toObject(includeInstance?: boolean): LanguageSetup.AsObject;
@@ -336,9 +325,7 @@ export class LanguageSetup extends jspb.Message {
 export namespace LanguageSetup {
   export type AsObject = {
     active: boolean,
-    repo: string,
-    filesList: Array<string>,
-    pkgname: string,
+    protocbinary: string,
   }
 }
 

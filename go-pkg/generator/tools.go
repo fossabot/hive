@@ -3,33 +3,8 @@ package generator
 import (
 	"fmt"
 	"io"
-	"io/ioutil"
 	"os"
-	"text/template"
 )
-
-func (code Code) Generate() error {
-	dat, err := ioutil.ReadFile(code.Template)
-	if err != nil {
-		return err
-	}
-
-	tmpl, err := template.New(code.Name).Parse(string(dat))
-	if err != nil {
-		return err
-	}
-
-	f, err := os.Create(code.Target)
-	if err != nil {
-		return err
-	}
-
-	err = tmpl.Execute(f, code.Interface)
-	if err != nil {
-		return err
-	}
-	return nil
-}
 
 func copy(src, dst string) (int64, error) {
 	sourceFileStat, err := os.Stat(src)

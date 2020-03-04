@@ -46,11 +46,10 @@ func GetPasswordTwice(title string) string {
 	confirm, err := terminal.ReadPassword(0)
 
 	if string(password) != string(confirm) {
-		fmt.Println("passwords don't match")
-		return GetPassword(title)
+		fmt.Println("passwords don't match\n-----------------------------------------")
+		return GetPasswordTwice(title)
 	}
 
-	fmt.Println("")
 	return string(password)
 }
 
@@ -67,6 +66,20 @@ func GetPassword(title string) string {
 	return string(password)
 }
 
+func StepBool(title string) bool {
+	var tmp string
+
+	reader := bufio.NewReader(os.Stdin)
+	fmt.Printf("%s (y/n): ", title)
+	wn , _ := reader.ReadString('\n')
+	tmp = strings.Replace(wn, "\n", "", 1)
+	if tmp != "y" && tmp != "n" {
+		fmt.Println("y or n only, please try again")
+		return StepBool(title)
+	}
+
+	return tmp == "y"
+}
 func Step(title, validate string, custom stringValid) string {
 	var tmp string
 

@@ -3,6 +3,7 @@ package conf
 import (
 	"fmt"
 	"github.com/benka-me/cell-user/go-pkg/user"
+	//"github.com/benka-me/hive/go-pkg/hive"
 	"gopkg.in/yaml.v2"
 	"io/ioutil"
 	"log"
@@ -13,11 +14,27 @@ type Conf struct {
 	Username string
 	Token string
 	Hives map[string]string
+	Bees map[string]string
 }
 
 
 var file = fmt.Sprintf("%s/.hive_conf.yaml", os.Getenv("HOME"))
 var HivePath = fmt.Sprintf("%s/hive", os.Getenv("HOME"))
+
+func AddBee (namespace, repo string) {
+	conf := ParseYaml()
+	if conf.Bees == nil {
+		conf.Bees = make(map[string]string)
+	}
+
+	conf.Bees[namespace] = repo
+	conf.SaveYaml()
+}
+
+func GetBeeRepo (namespace string) string {
+	conf := ParseYaml()
+	return conf.Bees[namespace]
+}
 
 func Hives(fn func (s string)) {
 	dirs, err := ioutil.ReadDir(HivePath)

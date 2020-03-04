@@ -1,11 +1,22 @@
-package hive
+package generator
 
 import (
 	"fmt"
+	"github.com/benka-me/hive/go-pkg/hive"
 )
 
-func (py Python) Protoc() {
-	for _, f := range py.Setup.Files {
+
+type Python hive.Python
+
+func (py Python) ClientsFiles(bee *hive.Bee) error {
+	return nil
+}
+func (py Python) EntryPointFiles(bee *hive.Bee) error {
+	return nil
+}
+
+func (py Python) Protoc(bee *hive.Bee) {
+	for _, f := range bee.ProtoSetup.Files {
 		py.oneProtoc(f)
 	}
 }
@@ -31,8 +42,4 @@ func (py Python) oneProtoc (file string) {
 	//	fmt.Println(errs.String())
 	//}
 	//fmt.Printf("%s\n", out.String())
-}
-
-func (py Python) PublicFiles (bee *Bee) error {
-	return nil
 }

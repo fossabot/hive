@@ -25,7 +25,7 @@ func RunRegister(c *cli.Context) error {
 		func(s string) error {return nil})
 
 	req.Email = scan.Step("Email", "email", func(s string) error {return nil})
-	req.Password = scan.GetPassword("Password")
+	req.Password = scan.GetPasswordTwice("Password")
 
 	res, err := userCell.Register(context.Background(), req)
 
